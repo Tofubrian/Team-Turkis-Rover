@@ -9,7 +9,7 @@ def beregn_renteindtægt_og_abonnement(formue):
     #return: (tuple) hvor der indgår (renteindtægt, årlige abonnementomkostning)
     
     # Bestem rente og abonnement baseret på formue
-    if formue < 100000:
+    if formue < 10000000:
         årlig_rente = 0.025  # 2.5%
         abonnement_pr_måned = 0  # Gratis
     elif formue <= 250000:
