@@ -25,10 +25,10 @@ void forward() {         //function of backward
 
 // turn right loop
 void turnRight() {
-  analogWrite(A1, 255);
+  analogWrite(A1, 225);
   analogWrite(A2, 0);
   analogWrite(B1, 0);
-  analogWrite(B2, 255);
+  analogWrite(B2, 225);
 }
 
 // turn left loop
