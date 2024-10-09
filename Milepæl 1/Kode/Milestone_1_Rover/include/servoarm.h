@@ -2,3 +2,8 @@
 #include <Wire.h>
 #include <VL53L0X.h> 
 
+//position for servoarm
+int armpos() {
+
+
+}
