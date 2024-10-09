@@ -6,6 +6,7 @@
 // Functions for the sensors goes in here
 
 // Function for moving forward, right and left
+// Sensor A, B and maybe C still needs to be defined
 // do while loop instead maybe? 
 void sensorAuto () {
     if (sensorA > 50 && sensorB < 50) {
