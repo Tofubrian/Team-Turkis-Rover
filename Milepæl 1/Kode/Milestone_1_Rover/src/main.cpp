@@ -5,8 +5,10 @@
   Home
 
 */
+#include <Arduino.h>
 #include <Wire.h>
-#include <VL53L0X.h> 
+#include <VL53L0X.h>
+#include <motorstyring.h> 
 
 #define A1 25  // Motor A pins
 #define A2 26
