@@ -16,6 +16,8 @@ void forward() {           // Kør Forlæns
   analogWrite(B2, 255);
 }
 
+
+// Sound when this function is executed
 void backward() {          // Kør Baglens
   analogWrite(A1, 255);
   analogWrite(A2, 0);
