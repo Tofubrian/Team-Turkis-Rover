@@ -4,3 +4,7 @@
 #include <motorstyring.h>
 
 //Vores lydfunktion
+
+void bakkelyd ()
+
+void musik()
