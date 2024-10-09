@@ -1,3 +1,5 @@
+#ignore librariy folders so it does not fuck up
+
 
 # Prerequisites
 *.d
