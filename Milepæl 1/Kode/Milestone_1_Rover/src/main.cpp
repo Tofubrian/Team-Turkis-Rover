@@ -13,6 +13,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring.h> 
+#include <joystick.h>
 
 // Dette er tilsluttet på vores ESP32
 #define A1 25  // Motor A pins
@@ -62,4 +63,13 @@ void loop() {
 
   turnRight();
   delay(5000); 
+};
+
+
+// Insert delay somehow so the function is not constantly called or listened to
+void driveToggle () {
+  while (true) {
+    if (joystickListen()) toggleMode();
+    return 0;
+  }
 };
