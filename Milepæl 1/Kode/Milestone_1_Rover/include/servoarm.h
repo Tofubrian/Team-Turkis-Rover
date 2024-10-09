@@ -2,31 +2,37 @@
 #include <Wire.h>
 #include <VL53L0X.h> 
 #include <Servo.h>
+/*
+ * This ESP32 code is created by esp32io.com
+ *
+ * This ESP32 code is released in the public domain
+ *
+ * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-servo-motor
+ */
 
 
-Servo myservo;  // create servo object to control a servo
 
+#define SERVO_PIN  // ESP32 pin GPIO26 connected to servo motor
 
-int potpin = 0;  // analog pin used to connect the potentiometer
-
-int val;    // variable to read the value from the analog pin
-
+Servo servoMotor;
 
 void setup() {
-
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
-
+  servoMotor.attach(SERVO_PIN);  // attaches the servo on ESP32 pin
 }
 
-
 void loop() {
+  // rotates from 0 degrees to 180 degrees
+  for (int pos = 0; pos <= 180; pos += 1) {
+    // in steps of 1 degree
+    servoMotor.write(pos);
+    delay(15); // waits 15ms to reach the position
+  }
 
-  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
-
-  val = map(val, 0, 1023, 0, 180);     // scale it to use it with the servo (value between 0 and 180)
-
-  myservo.write(val);                  // sets the servo position according to the scaled value
-
-  delay(15);                           // waits for the servo to get there
+  // rotates from 180 degrees to 0 degrees
+  for (int pos = 180; pos >= 0; pos -= 1) {
+    servoMotor.write(pos);
+    delay(15); // waits 15ms to reach the position
+  }
+}
 
 }
