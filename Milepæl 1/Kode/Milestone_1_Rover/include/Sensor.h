@@ -8,16 +8,13 @@
 // Function for moving forward, right and left
 // do while loop instead maybe? 
 void sensorAuto () {
-    if (sensor > 50 && speed < 255) {
-        turnRight();
-    }
-    else if () {
+    if (sensorA > 50 && sensorB < 50) {
         turnLeft();
-
+    }
+    else if (sensorA < 50 && sensorB > 50) {
+        turnRight();
     }
     else {
         forward();
-        
-        
     }
 }
