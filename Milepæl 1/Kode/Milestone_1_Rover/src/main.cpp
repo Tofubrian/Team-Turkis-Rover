@@ -11,8 +11,9 @@
 #include <VL53L0X.h>
 #include <motorstyring.h> 
 
+// Dette er tilsluttet på vores ESP32
 #define A1 25  // Motor A pins
-#define A2 26
+#define A2 26 // 
 #define B1 14 // Motor B pins
 #define B2 12
 
