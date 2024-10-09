@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring.h> 
-#include <joystick.h>
+
 
 // Dette er tilsluttet på vores ESP32
 #define A1 25  // Motor A pins
