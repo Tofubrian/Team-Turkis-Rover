@@ -1,29 +1,58 @@
-#include <Arduino.h>
-#include <iostream>
-// Test Test
-// test test test
-// put function declarations here:
-int myFunction(int, int);
+/*
+   L9110S-Stepper-DC-motor-Driver-Module
+  made on 28 oct 2020
+  by Amir Mohammad Shojaee @ Electropeak
+  Home
+
+*/
+#include <Wire.h>
+#include <VL53L0X.h> 
+
+#define A1 25  // Motor A pins
+#define A2 26
+#define B1 14 // Motor B pins
+#define B2 12
+
+int incomingByte = 0; // for incoming serial data
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(B1, OUTPUT);
+  pinMode(B2, OUTPUT);
+
+  digitalWrite(A1, LOW);
+  digitalWrite(A2, LOW);
+  digitalWrite(B1, LOW);
+  digitalWrite(B2, LOW);
+
+  Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
+
 }
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  forward();
+  delay (3000);
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-  
-}
+  backward();
+  delay (3000);
 
-// Your First C++ Program
+  turnLeft();
+  delay (750);
 
+  forward();
+  delay (3000);
 
+  turnRight();
+  delay (750);
 
-int main() {
-    std::cout << "Hello World!";
-    return 0;
-}
+  backward();
+  delay (3000);
+
+  Stop();
+  delay(20000);
+
+  turnRight();
+  delay(5000); 
+};
