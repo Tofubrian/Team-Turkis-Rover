@@ -1,39 +1,32 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h> 
+#include <Servo.h>
 
 
-#define PIN 
+Servo myservo;  // create servo object to control a servo
+
+
+int potpin = 0;  // analog pin used to connect the potentiometer
+
+int val;    // variable to read the value from the analog pin
+
 
 void setup() {
 
-  // start the serial connection
-  Serial.begin();
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
 
-  // wait for serial monitor to open
-  while(! Serial);
+}
 
-  // tell the servo class which pin we are using
-  servo.attach(SERVO_PIN);
 
-  // connect to io.adafruit.com
-  Serial.print("Connecting to Adafruit IO");
-  io.connect();
+void loop() {
 
-  // set up a message handler for the 'servo' feed.
-  // the handleMessage function (defined below)
-  // will be called whenever a message is
-  // received from adafruit io.
-  servo_feed->onMessage(handleMessage);
+  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
 
-  // wait for a connection
-  while(io.status() < AIO_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
+  val = map(val, 0, 1023, 0, 180);     // scale it to use it with the servo (value between 0 and 180)
 
-  // we are connected
-  Serial.println();
-  Serial.println(io.statusText());
+  myservo.write(val);                  // sets the servo position according to the scaled value
+
+  delay(15);                           // waits for the servo to get there
 
 }
