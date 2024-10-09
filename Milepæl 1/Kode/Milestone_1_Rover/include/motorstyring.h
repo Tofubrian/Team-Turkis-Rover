@@ -30,19 +30,23 @@ void Stop() {              // Stop
   analogWrite(B2, 0);
 }
 
-void turnRight() {       // Drej til højre
+
+
+
+/*Grunden til at turn har 225 i stedet for 255 er pga. 
+for at kunne dreje et antal grader præcist, måtte 
+hastigheden sættes ned for at undgå ustabillitet og hjulspin.*/
+
+void turnRight() {        // Drej til højre
   analogWrite(A1, 225);  
   analogWrite(A2, 0);
   analogWrite(B1, 0);
   analogWrite(B2, 225);
 }
 
-void turnLeft() {        // Drej til venstre
+void turnLeft() {         // Drej til venstre
   analogWrite(A1, 0);
   analogWrite(A2, 255);
   analogWrite(B1, 225);
   analogWrite(B2, 0);
 }
-/*Grunden til at turn har 225 i stedet for 255 er pga. 
-for at kunne dreje et antal grader præcist, måtte 
-hastigheden sættes ned for at undgå ustabillitet og hjulspin.*/
