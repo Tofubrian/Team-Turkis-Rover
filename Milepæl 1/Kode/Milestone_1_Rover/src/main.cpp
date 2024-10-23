@@ -12,7 +12,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
-#include <motorstyring.h> 
+#include <motorstyring2.h> 
 
 
 // Dette er tilsluttet på vores ESP32
@@ -22,10 +22,12 @@
 #define B2 12
 #define sensorRight 16 // Time of flight sensor
 
-hbro motors = {A1, A2, B1, B2};
+
 
 // Globale variabler vi skal bruge
 VL53L0X sensor;
+// Definition af h-bro pins der skal bruges til struct
+hbro motors = {A1, A2, B1, B2};
 
 
 int incomingByte = 0; // for incoming serial data
@@ -34,18 +36,12 @@ int incomingByte = 0; // for incoming serial data
 void setup() {
 
   // Motor setup
-  pinMode(A1, OUTPUT);
-  pinMode(A2, OUTPUT);
-  pinMode(B1, OUTPUT);
-  pinMode(B2, OUTPUT);
+  initMotors(motors);
 
-  digitalWrite(A1, LOW);
-  digitalWrite(A2, LOW);
-  digitalWrite(B1, LOW);
-  digitalWrite(B2, LOW);
+  // Stop motorer ved start
+  stop(motors);
 
   Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
-
 
   // Sensor setup 
   Serial.begin(9600);
@@ -65,10 +61,12 @@ void loop()
   Serial.print(sensor.readRangeSingleMillimeters());
   int distance = sensor.readRangeSingleMillimeters();
   if (distance <= 50) {
-    turnLeft();
+    turnLeft(motors);
+    Serial.print(distance);
   }
   else if (distance > 50) {
-    forward();
+    forward(motors);
+    Serial.print(distance);
   }
   //delay(50);
   if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
