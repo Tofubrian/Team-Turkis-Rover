@@ -10,7 +10,7 @@
 // Struct setup for pins til hjul, kan benyttes til sensor styring senere
 struct hbro
 {
-  const int motorPinA1; // Venstre side frem
+  const int motorPinA1; // 
   const int motorPinA2; // 
   const int motorPinB1;
   const int motorPinB2;
@@ -23,6 +23,7 @@ void initMotors (hbro motorPins)
     pinMode(motorPins.motorPinB1, OUTPUT);
     pinMode(motorPins.motorPinB2, OUTPUT);
 };
+
 
 
 int incomingByte = 0; // for incoming serial data

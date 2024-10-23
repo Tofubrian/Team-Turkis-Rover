@@ -65,6 +65,8 @@ void loop() {
 
   turnRight();
   delay(5000); 
+
+  // if statement for sensor driving, struct defineret i motorstyring.h
 };
 
 
