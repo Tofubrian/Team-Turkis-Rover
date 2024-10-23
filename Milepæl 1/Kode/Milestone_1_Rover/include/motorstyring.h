@@ -7,6 +7,24 @@
 #define B1 14 // Motor B pins
 #define B2 12
 
+// Struct setup for pins til hjul, kan benyttes til sensor styring senere
+struct hbro
+{
+  const int motorPinA1; // Venstre side frem
+  const int motorPinA2; // 
+  const int motorPinB1;
+  const int motorPinB2;
+};
+
+void initMotors (hbro motorPins)
+{
+    pinMode(motorPins.motorPinA1, OUTPUT);
+    pinMode(motorPins.motorPinA2, OUTPUT);
+    pinMode(motorPins.motorPinB1, OUTPUT);
+    pinMode(motorPins.motorPinB2, OUTPUT);
+};
+
+
 int incomingByte = 0; // for incoming serial data
 
 void forward() {           // Kør Forlæns
