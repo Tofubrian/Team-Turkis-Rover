@@ -20,7 +20,12 @@
 #define A2 26 // 
 #define B1 14 // Motor B pins
 #define B2 12
+#define sensorRight 16 // Time of flight sensor
 
+hbro motors = {A1, A2, B1, B2};
+
+// Globale variabler vi skal bruge
+VL53L0X sensor;
 
 
 int incomingByte = 0; // for incoming serial data
@@ -28,6 +33,7 @@ int incomingByte = 0; // for incoming serial data
 
 void setup() {
 
+  // Motor setup
   pinMode(A1, OUTPUT);
   pinMode(A2, OUTPUT);
   pinMode(B1, OUTPUT);
@@ -40,40 +46,72 @@ void setup() {
 
   Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
 
+
+  // Sensor setup 
+  Serial.begin(9600);
+  Wire.begin();
+  sensor.setTimeout(500);
+  if (!sensor.init())
+  {
+    Serial.println("Failed to detect and initialize sensor!");
+    while (1) {}
+  }
+  sensor.startContinuous();
 }
-void loop() {
-  forward();
-  delay (3000);
 
-  backward();
-  delay (3000);
+// Loop der kører automatisk kørsel
+void loop()
+{
+  Serial.print(sensor.readRangeSingleMillimeters());
+  int distance = sensor.readRangeSingleMillimeters();
+  if (distance <= 50) {
+    turnLeft();
+  }
+  else if (distance > 50) {
+    forward();
+  }
+  //delay(50);
+  if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
-  turnLeft();
-  delay (750);
+  Serial.println();
+}
 
-  forward();
-  delay (3000);
+// Loop der kører funktioner som er skrevet på forhånd
+// void loop() {
+//   forward();
+//   delay (3000);
 
-  turnRight();
-  delay (750);
+//   backward();
+//   delay (3000);
 
-  backward();
-  delay (3000);
+//   turnLeft();
+//   delay (750);
 
-  Stop();
-  delay(20000);
+//   forward();
+//   delay (3000);
 
-  turnRight();
-  delay(5000); 
+//   turnRight();
+//   delay (750);
 
-  // if statement for sensor driving, struct defineret i motorstyring.h
-};
+//   backward();
+//   delay (3000);
+
+//   Stop();
+//   delay(20000);
+
+//   turnRight();
+//   delay(5000); 
+
+//   // if statement for sensor driving, struct defineret i motorstyring.h
+// };
+
+
 
 
 // Insert delay somehow so the function is not constantly called or listened to
-void driveToggle () {
-  while (true) {
-    if (joystickListen()) toggleMode();
-    return 0;
-  }
-};
+// void driveToggle () {
+//   while (true) {
+//     if (joystickListen()) toggleMode();
+//     return 0;
+//   }
+// };

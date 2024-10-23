@@ -2,18 +2,21 @@
 #include <Wire.h>
 #include <VL53L0X.h> 
 
-#define A1 25  // Motor A pins
-#define A2 26
-#define B1 14 // Motor B pins
-#define B2 12
+// #define A1 25  // Motor A pins
+// #define A2 26 //
+// #define B1 14 // Motor B pins
+// #define B2 12
+// #define sensorRight 16 // Time of flight sensor
+
+// VL53L0X sensor; // Variabel til sensor
 
 // Struct setup for pins til hjul, kan benyttes til sensor styring senere
 struct hbro
 {
-  const int motorPinA1; // 
-  const int motorPinA2; // 
-  const int motorPinB1;
-  const int motorPinB2;
+  const int motorPinA1; // Motor A tilbage 
+  const int motorPinA2; // Motor A frem 
+  const int motorPinB1; // Motor B tilbage
+  const int motorPinB2; // Motor B frem
 };
 
 void initMotors (hbro motorPins)
@@ -28,7 +31,7 @@ void initMotors (hbro motorPins)
 
 int incomingByte = 0; // for incoming serial data
 
-void forward() {           // Kør Forlæns
+void forward(int A1, int A2, int B1, int B2) {           // Kør Forlæns
   analogWrite(A1, 0);
   analogWrite(A2, 255);
   analogWrite(B1, 0);
@@ -37,14 +40,14 @@ void forward() {           // Kør Forlæns
 
 
 // Sound when this function is executed
-void backward() {          // Kør Baglens
+void backward(int A1, int A2, int B1, int B2) {          // Kør Baglens
   analogWrite(A1, 255);
   analogWrite(A2, 0);
   analogWrite(B1, 255);
   analogWrite(B2, 0);
 }
 
-void Stop() {              // Stop
+void Stop(int A1, int A2, int B1, int B2) {              // Stop
   analogWrite(A1, 0);
   analogWrite(A2, 0);
   analogWrite(B1, 0);
@@ -58,14 +61,14 @@ void Stop() {              // Stop
 for at kunne dreje et antal grader præcist, måtte 
 hastigheden sættes ned for at undgå ustabillitet og hjulspin.*/
 
-void turnRight() {        // Drej til højre
+void turnRight(int A1, int A2, int B1, int B2) {        // Drej til højre
   analogWrite(A1, 225);  
   analogWrite(A2, 0);
   analogWrite(B1, 0);
   analogWrite(B2, 225);
 }
 
-void turnLeft() {         // Drej til venstre
+void turnLeft(int A1, int A2, int B1, int B2) {         // Drej til venstre
   analogWrite(A1, 0);
   analogWrite(A2, 255);
   analogWrite(B1, 225);
