@@ -61,13 +61,17 @@ void loop()
 {
   Serial.print(sensor.readRangeSingleMillimeters());
   int distance = sensor.readRangeSingleMillimeters();
-  if (distance <= 50) {
+  if (distance <= 300) {
     turnLeft(motors);
     Serial.print(distance);
+    delay(200);
   }
-  else if (distance > 50) {
-    forward(motors);
+  else if (distance > 600) {
+    turnRight(motors);
     Serial.print(distance);
+  }
+  else {
+    forward(motors);
   }
   //delay(50);
   if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
