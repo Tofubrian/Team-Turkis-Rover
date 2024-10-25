@@ -8,113 +8,141 @@
 
 
 
-#include <joystick.h>
+// #include <joystick.h>
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
-#include <motorstyring2.h> 
+#include <motorstyring.h> 
 
+int incomingByte = 0; // for incoming serial data
 
 // Dette er tilsluttet på vores ESP32
 #define A1 25  // Motor A pins
 #define A2 26 // 
 #define B1 14 // Motor B pins
 #define B2 12
-#define sensorRight 16 // Time of flight sensor
+// #define LED 16
 
+// Pins for XSHUT
+#define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
+#define XSHUT_LEFT 17    // XSHUT pin for venstre sensor
 
+VL53L0X sensorRight;
+VL53L0X sensorLeft;
 
-// Globale variabler vi skal bruge
-VL53L0X sensor;
-// Definition af h-bro pins der skal bruges til struct
-hbro motors = {A1, A2, B1, B2};
-
-
-int incomingByte = 0; // for incoming serial data
 
 
 
 void setup() {
 
-  // Motor setup
-  initMotors(motors);
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(B1, OUTPUT);
+  pinMode(B2, OUTPUT);
 
-  // Stop motorer ved start
-  stop(motors);
+  digitalWrite(A1, LOW);
+  digitalWrite(A2, LOW);
+  digitalWrite(B1, LOW);
+  digitalWrite(B2, LOW);
 
   Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
 
-  // Sensor setup 
-  Serial.begin(9600);
-  Wire.begin();
-  sensor.setTimeout(500);
-  if (!sensor.init())
-  {
-    Serial.println("Failed to detect and initialize sensor!");
+  Wire.begin(); // Begin I2C communication
+
+  // Configure XSHUT pins for sensorLeft and sensorRight
+  pinMode(XSHUT_LEFT, OUTPUT);
+  pinMode(XSHUT_RIGHT, OUTPUT);
+
+  // Deactivate both sensors at the beginning
+  digitalWrite(XSHUT_LEFT, LOW);
+  digitalWrite(XSHUT_RIGHT, LOW);
+  delay(10);  // Small delay for sensor initialization
+
+  // Initialize the left sensor
+  digitalWrite(XSHUT_LEFT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorLeft.init()) {
+    Serial.println("Failed to initialize left sensor!");
     while (1) {}
   }
-  sensor.startContinuous();
+  sensorLeft.setAddress(0x31); // Set unique address for left sensor
+  sensorLeft.startContinuous();
+
+  // Initialize the right sensor
+  digitalWrite(XSHUT_RIGHT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorRight.init()) {
+    Serial.println("Failed to initialize right sensor!");
+    while (1) {}
+  }
+  sensorRight.setAddress(0x30); // Set unique address for right sensor
+  sensorRight.startContinuous();
+
+
+
+
 }
+void loop() {
+  int distanceLeft = sensorLeft.readRangeSingleMillimeters();
+  int distanceRight = sensorRight.readRangeSingleMillimeters();
 
-// Loop der kører automatisk kørsel
-void loop()
-{
-  Serial.print(sensor.readRangeSingleMillimeters());
-  int distance = sensor.readRangeSingleMillimeters();
-  if (distance <= 300) {
-    turnLeft(motors);
-    Serial.print(distance);
-    delay(200);
+  Serial.print("Left Distance: ");
+  Serial.print(distanceLeft);
+  Serial.print(" Right Distance: ");
+  Serial.println(distanceRight);
+
+  if (distanceLeft <= 200) { 
+    // Obstacle on the left, turn right
+    turnRight();
+    delay(100);
+  } 
+  else if (distanceRight <= 200) {
+    // Obstacle on the right, turn left
+    turnLeft();
+    delay(100);
+  } 
+  else if (distanceLeft > 200 && distanceRight > 200) {
+    // Clear path, move forward
+    forward();
   }
-  else if (distance > 600) {
-    turnRight(motors);
-    Serial.print(distance);
+
+  // Timeout handling for both sensors
+  if (sensorLeft.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Left Sensor");
   }
-  else {
-    forward(motors);
+  if (sensorRight.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Right Sensor");
   }
-  //delay(50);
-  if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
-  Serial.println();
-}
-
-// Loop der kører funktioner som er skrevet på forhånd
-// void loop() {
-//   forward();
-//   delay (3000);
-
-//   backward();
-//   delay (3000);
-
-//   turnLeft();
-//   delay (750);
-
-//   forward();
-//   delay (3000);
-
-//   turnRight();
-//   delay (750);
-
-//   backward();
-//   delay (3000);
-
-//   Stop();
-//   delay(20000);
-
-//   turnRight();
-//   delay(5000); 
-
-//   // if statement for sensor driving, struct defineret i motorstyring.h
-// };
+  delay(50); // Small delay for stability in loop
 
 
 
+  // forward();
+  // delay (3000);
 
-// Insert delay somehow so the function is not constantly called or listened to
-// void driveToggle () {
-//   while (true) {
-//     if (joystickListen()) toggleMode();
-//     return 0;
-//   }
-// };
+  // backward();
+  // delay (3000);
+
+  // turnLeft();
+  // delay (750);
+
+  // forward();
+  // delay (3000);
+
+  // turnRight();
+  // delay (750);
+
+  // backward();
+  // delay (3000);
+
+  // Stop();
+  // delay(20000);
+
+  // turnRight();
+  // delay(5000); 
+
+  // // if statement for sensor driving, struct defineret i motorstyring.h
+};
+
+
