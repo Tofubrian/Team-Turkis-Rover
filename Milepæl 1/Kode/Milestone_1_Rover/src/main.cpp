@@ -26,9 +26,11 @@ int incomingByte = 0; // for incoming serial data
 // Pins for XSHUT
 #define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
 #define XSHUT_LEFT 17    // XSHUT pin for venstre sensor
+#define XSHUT_FRONT 19    // XSHUT pin for front sensor
 
 VL53L0X sensorRight;
 VL53L0X sensorLeft;
+VL53L0X sensorFront;
 
 
 
@@ -49,13 +51,15 @@ void setup() {
 
   Wire.begin(); // Begin I2C communication
 
-  // Configure XSHUT pins for sensorLeft and sensorRight
+  // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront
   pinMode(XSHUT_LEFT, OUTPUT);
   pinMode(XSHUT_RIGHT, OUTPUT);
+  pinMode(XSHUT_FRONT, OUTPUT);
 
   // Deactivate both sensors at the beginning
   digitalWrite(XSHUT_LEFT, LOW);
   digitalWrite(XSHUT_RIGHT, LOW);
+  digitalWrite(XSHUT_FRONT, LOW);
   delay(10);  // Small delay for sensor initialization
 
   // Initialize the left sensor
@@ -78,6 +82,16 @@ void setup() {
   sensorRight.setAddress(0x30); // Set unique address for right sensor
   sensorRight.startContinuous();
 
+  // Initialize the right sensor
+  digitalWrite(XSHUT_FRONT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorFront.init()) {
+    Serial.println("Failed to initialize Front sensor!");
+    while (1) {}
+  }
+  sensorFront.setAddress(0x29); // Set unique address for front sensor
+  sensorFront.startContinuous();
+
 
 
 
@@ -85,11 +99,14 @@ void setup() {
 void loop() {
   int distanceLeft = sensorLeft.readRangeSingleMillimeters();
   int distanceRight = sensorRight.readRangeSingleMillimeters();
+  int distanceFront = sensorFront.readRangeSingleMillimeters();
 
   Serial.print("Left Distance: ");
   Serial.print(distanceLeft);
   Serial.print(" Right Distance: ");
   Serial.println(distanceRight);
+  Serial.print(" Front Distance: ");
+  Serial.println(distanceFront);
 
   if (distanceLeft <= 200) { 
     // Obstacle on the left, turn right
@@ -106,12 +123,20 @@ void loop() {
     forward();
   }
 
+  else if (distanceFront <= 220) {
+    forwardSave();
+  }
+
   // Timeout handling for both sensors
   if (sensorLeft.timeoutOccurred()) { 
     Serial.println(" TIMEOUT on Left Sensor");
   }
   if (sensorRight.timeoutOccurred()) { 
     Serial.println(" TIMEOUT on Right Sensor");
+  }
+
+  if (sensorFront.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Front Sensor");
   }
 
   delay(50); // Small delay for stability in loop

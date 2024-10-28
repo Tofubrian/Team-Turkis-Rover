@@ -102,3 +102,8 @@ void turnLeft() {         // Drej til venstre
   analogWrite(B1, 225);
   analogWrite(B2, 0);
 }
+
+void forwardSave () {
+  backward();
+  delay(2000);
+}
