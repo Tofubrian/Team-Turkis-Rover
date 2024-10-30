@@ -33,6 +33,26 @@ VL53L0X sensorLeft;
 VL53L0X sensorFront;
 
 
+class main
+{
+private:
+  /* data */
+public:
+  main(/* args */);
+  ~main();
+};
+
+main::main(/* args */)
+{
+
+}
+
+main::~main()
+{
+  
+}
+
+
 
 
 void setup() {
