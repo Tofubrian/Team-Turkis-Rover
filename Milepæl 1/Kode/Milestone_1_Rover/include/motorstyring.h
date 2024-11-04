@@ -40,6 +40,8 @@
 #define B1 14 // Motor B pins
 #define B2 12
 
+const int channel = 0;     // LEDC channel (0-15)
+
 // Struct setup for pins til hjul, kan benyttes til sensor styring senere
 struct hbro
 {
@@ -58,6 +60,9 @@ void initMotors (hbro motorPins)
 };
 
 
+// void ledcWriteTone(){
+//   (channel, 2000);
+// }
 
 
 
@@ -66,6 +71,7 @@ void backward() {           // Kør Forlæns
   analogWrite(A2, 255);
   analogWrite(B1, 0);
   analogWrite(B2, 255);
+  
 }
 
 
@@ -83,11 +89,6 @@ void Stop() {              // Stop
   analogWrite(B1, 0);
   analogWrite(B2, 0);
 }
-
-
-
-
-
 
 void turnRight() {        // Drej til højre
   analogWrite(A1, 225);
@@ -107,12 +108,14 @@ void forwardSaveRight () {
   backward();
   delay(700);
   turnRight();
-  delay(300);
+  delay(1000);
+  ledcWriteTone(channel, 2000);
 }
 
 void forwardSaveLeft () {
   backward();
   delay(700);
   turnLeft();
-  delay(300);
+  delay(1000);
+  ledcWriteTone(channel, 2000);
 }

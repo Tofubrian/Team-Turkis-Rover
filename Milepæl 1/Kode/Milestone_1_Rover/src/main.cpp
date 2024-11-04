@@ -32,6 +32,10 @@ VL53L0X sensorRight;
 VL53L0X sensorLeft;
 VL53L0X sensorFront;
 
+// Pin for buzzer module
+#define buzzerPin 33    // Buzzer sensor
+
+
 
 
 
@@ -92,8 +96,11 @@ void setup() {
   sensorFront.setAddress(0x29); // Set unique address for front sensor
   sensorFront.startContinuous();
 
-
-
+  // Buzzer module activation
+  pinMode(buzzerPin, OUTPUT);
+  ledcSetup(channel, 2000, 8);  // channel, initial frequency, resolution
+  ledcAttachPin(buzzerPin, channel);
+  
 
 }
 void loop() {
@@ -151,8 +158,6 @@ else {
   if (sensorFront.timeoutOccurred()) { 
     Serial.println(" TIMEOUT on Front Sensor");
   }
-
-  delay(50); // Small delay for stability in loop
 
 
 
