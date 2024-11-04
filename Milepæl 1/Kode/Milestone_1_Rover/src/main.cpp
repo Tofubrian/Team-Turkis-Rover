@@ -47,7 +47,7 @@ void setup() {
   digitalWrite(B1, LOW);
   digitalWrite(B2, LOW);
 
-  Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
+  Serial.begin(115200); // opens serial port, sets data rate to 115200 bps
 
   Wire.begin(); // Begin I2C communication
 
@@ -108,24 +108,40 @@ void loop() {
   Serial.print(" Front Distance: ");
   Serial.println(distanceFront);
 
-  if (distanceLeft <= 200) { 
-    // Obstacle on the left, turn right
-    turnRight();
-    delay(100);
-  } 
-  else if (distanceRight <= 200) {
-    // Obstacle on the right, turn left
-    turnLeft();
-    delay(100);
-  } 
-  else if (distanceLeft > 200 && distanceRight > 200) {
-    // Clear path, move forward
-    forward();
-  }
+if (distanceFront <= 220) {
+  // Obstacle in front, perform forwardSave()
+  forwardSaveRight();
+  delay(100);
+}
+else if (distanceFront <= 200 && distanceRight <= 200) {
+  forwardSaveLeft();
+  delay(100);
+}
 
-  else if (distanceFront <= 220) {
-    forwardSave();
-  }
+else if (distanceFront <= 200 && distanceLeft <= 200) {
+  forwardSaveRight();
+  delay(100);
+}
+
+else if (distanceLeft <= 200 && distanceRight <= 200) {
+  // Obstacles on both sides, move forward cautiously
+  forwardSaveRight();
+  delay(100);
+}
+else if (distanceLeft <= 200) {
+  // Obstacle on the left, turn right
+  turnRight();
+  delay(100);
+} 
+else if (distanceRight <= 200) {
+  // Obstacle on the right, turn left
+  turnLeft();
+  delay(100);
+} 
+else {
+  // Clear path, move forward
+  forward();
+}
 
   // Timeout handling for both sensors
   if (sensorLeft.timeoutOccurred()) { 
