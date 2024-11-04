@@ -1,35 +1,3 @@
-// #include <Arduino.h>
-// #include <Wire.h>
-// #include <VL53L0X.h> 
-
-// #define A1 25  // Motor A pins
-// #define A2 26 //
-// #define B1 14 // Motor B pins
-// #define B2 12
-// #define sensorRight 16 // Time of flight sensor
-
-// VL53L0X sensor; // Variabel til sensor
-
-// Struct setup for pins til hjul, kan benyttes til sensor styring senere
-// struct hbro
-// {
-//   const int motorPinA1; // Motor A tilbage 
-//   const int motorPinA2; // Motor A frem 
-//   const int motorPinB1; // Motor B tilbage
-//   const int motorPinB2; // Motor B frem
-// };
-
-// void initMotors (hbro motorPins)
-// {
-//     pinMode(motorPins.motorPinA1, OUTPUT);
-//     pinMode(motorPins.motorPinA2, OUTPUT);
-//     pinMode(motorPins.motorPinB1, OUTPUT);
-//     pinMode(motorPins.motorPinB2, OUTPUT);
-// };
-
-
-
-// int incomingByte = 0; // for incoming serial data
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -62,13 +30,6 @@ void initMotors (hbro motorPins)
     pinMode(motorPins.motorPinB1, OUTPUT);
     pinMode(motorPins.motorPinB2, OUTPUT);
 };
-
-
-// void playTone(){
-//   ledcWriteTone(channel, 1200);
-// }
-
-
 
 void backward() {           // Kør Forlæns
   analogWrite(A1, 0);
