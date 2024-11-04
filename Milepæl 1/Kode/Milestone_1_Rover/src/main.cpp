@@ -111,16 +111,13 @@ void loop() {
 if (distanceFront <= 220) {
   // Obstacle in front, perform forwardSave()
   forwardSaveRight();
-  delay(100);
 }
 else if (distanceFront <= 200 && distanceRight <= 200) {
   forwardSaveLeft();
-  delay(100);
 }
 
 else if (distanceFront <= 200 && distanceLeft <= 200) {
   forwardSaveRight();
-  delay(100);
 }
 
 else if (distanceLeft <= 200 && distanceRight <= 200) {

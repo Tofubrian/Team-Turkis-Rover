@@ -107,12 +107,12 @@ void forwardSaveRight () {
   backward();
   delay(700);
   turnRight();
-  delay(100);
+  delay(300);
 }
 
 void forwardSaveLeft () {
   backward();
   delay(700);
   turnLeft();
-  delay(100);
+  delay(300);
 }
