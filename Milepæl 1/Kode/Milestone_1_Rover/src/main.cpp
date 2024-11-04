@@ -120,12 +120,6 @@ void setup() {
   }
   sensorFront.setAddress(0x29); // Set unique address for front sensor
   sensorFront.startContinuous();
-
-
-
-
-  
-
 }
 void loop() {
   int distanceLeft = sensorLeft.readRangeSingleMillimeters();
