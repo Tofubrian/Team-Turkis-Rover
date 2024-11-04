@@ -118,6 +118,7 @@ void loop() {
 if (distanceFront <= 220) {
   // Obstacle in front, perform forwardSave()
   forwardSaveRight();
+  ledcWriteTone(channel, 1200);
 }
 else if (distanceFront <= 200 && distanceRight <= 200) {
   forwardSaveLeft();

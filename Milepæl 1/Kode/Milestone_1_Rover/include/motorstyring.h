@@ -109,7 +109,7 @@ void forwardSaveRight () {
   delay(700);
   turnRight();
   delay(1000);
-  ledcWriteTone(channel, 2000);
+  
 }
 
 void forwardSaveLeft () {
@@ -117,5 +117,5 @@ void forwardSaveLeft () {
   delay(700);
   turnLeft();
   delay(1000);
-  ledcWriteTone(channel, 2000);
+
 }
