@@ -16,11 +16,7 @@
 
 int incomingByte = 0; // for incoming serial data
 
-
-class Bil
-int main()
-{
- // Dette er tilsluttet på vores ESP32
+// Dette er tilsluttet på vores ESP32
 #define A1 25  // Motor A pins
 #define A2 26 // 
 #define B1 14 // Motor B pins
@@ -31,9 +27,6 @@ int main()
 #define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
 #define XSHUT_LEFT 17    // XSHUT pin for venstre sensor
 #define XSHUT_FRONT 19    // XSHUT pin for front sensor
-
-}
-
 
 VL53L0X sensorRight;
 VL53L0X sensorLeft;
