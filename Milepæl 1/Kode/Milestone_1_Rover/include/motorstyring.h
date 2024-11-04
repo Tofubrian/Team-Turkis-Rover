@@ -40,7 +40,11 @@
 #define B1 14 // Motor B pins
 #define B2 12
 
+// Pin for buzzer module
+#define buzzerPin 33    // Buzzer sensor
+
 const int channel = 0;     // LEDC channel (0-15)
+bool isForwardSaveRightActive = false;
 
 // Struct setup for pins til hjul, kan benyttes til sensor styring senere
 struct hbro
@@ -60,8 +64,8 @@ void initMotors (hbro motorPins)
 };
 
 
-// void ledcWriteTone(){
-//   (channel, 2000);
+// void playTone(){
+//   ledcWriteTone(channel, 1200);
 // }
 
 
@@ -105,17 +109,33 @@ void turnLeft() {         // Drej til venstre
 }
 
 void forwardSaveRight () {
+  isForwardSaveRightActive = true;
+
+  // Activate buzzer sound
+  digitalWrite(buzzerPin, LOW);
+
+  // Motor control code
   backward();
   delay(700);
   turnRight();
   delay(1000);
-  
+
+  // Deactivate buzzer sound
+  digitalWrite(buzzerPin, HIGH);
+
+  isForwardSaveRightActive = false;
 }
 
 void forwardSaveLeft () {
+ 
+  
+  // Your existing forwardSaveRight() code here
   backward();
   delay(700);
   turnLeft();
   delay(1000);
+
+
+  
 
 }
