@@ -46,6 +46,8 @@ const int LED_OUTPUT_PIN = 33;
 
 const int DELAY_MS = 0;  // delay between fade increments
 
+// bool isForwardSaveRightActive = false;
+
 
 
 void setup() {
@@ -62,6 +64,7 @@ void setup() {
 
   // ledcAttachPin(uint8_t pin, uint8_t channel);
   ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
+  
 
   pinMode(A1, OUTPUT);
   pinMode(A2, OUTPUT);
@@ -138,8 +141,11 @@ void loop() {
 
 if (distanceFront <= 220) {
   // Obstacle in front, perform forwardSave()
-  forwardSaveRight();
   ledcWrite(PWM_CHANNEL, 500);
+  forwardSaveRight();
+  ledcWrite(PWM_CHANNEL, 0);
+
+  
   // // fade up PWM on given channel
   // for(int dutyCycle = 0; dutyCycle <= MAX_DUTY_CYCLE; dutyCycle++){   
   //   ledcWrite(PWM_CHANNEL, dutyCycle);
