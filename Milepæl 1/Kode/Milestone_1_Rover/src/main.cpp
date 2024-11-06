@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring_CLASSES.h>
+#include <ESP32Servo.h>
 #include <servoarm.h>
 
 // Definer pins osv for rover arm her
