@@ -153,7 +153,7 @@ public:
 
     void forward(int speed = 255) {
         accelerateForward(speed);
-        setMotorSpeed(speed); // Maintain full speed
+        
     }
 
     void backward(int speed = 255) {

@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring_CLASSES.h>
+#include <servoarm.h>
 
 int incomingByte = 0; // for incoming serial data
 

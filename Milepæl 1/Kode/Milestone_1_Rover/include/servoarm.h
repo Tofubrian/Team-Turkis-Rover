@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h> 
-#include <Servo.h>
 /*
  * This ESP32 code is created by esp32io.com
  *
