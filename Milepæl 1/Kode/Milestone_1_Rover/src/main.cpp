@@ -6,10 +6,12 @@
 #include <servoarm.h>
 
 // Definer pins osv for rover arm her
-Servo servoGrab;
-Servo servoBottom;
-Servo servoRight;
-Servo servoLeft;
+// Servo servoGrab;
+// Servo servoBottom;
+// Servo servoRight;
+// Servo servoLeft;
+
+RoverArm servoMotors(17, 18, 5, 16); // Grab, Bunden, Højre, Venstre
 
 void setup() 
 {
@@ -34,6 +36,12 @@ void setup()
 
 void loop() 
 {
+  
+  // Test servo classes
+  servoMotors.pinch();
+  
+  
+  
   // Grab servo   
   for(int i = 180; i > 0; i-=3) 
   {
@@ -97,8 +105,6 @@ void loop()
 // // Alt fungerende kode herunder
 
 // int incomingByte = 0; // for incoming serial data
-
-
 
 // MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
