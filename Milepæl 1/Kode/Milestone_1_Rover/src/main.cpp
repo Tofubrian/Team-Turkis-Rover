@@ -37,68 +37,74 @@ void setup()
 void loop() 
 {
   
-  // Test servo classes
-  servoMotors.pinch();
+  // Test servo pinch functionality
+  servoMotors.pinch();  // Close the grab servo
+  delay(2000);  // Wait for 2 seconds
+
+  servoMotors.open();  // Open the grab servo
+  delay(2000);  // Wait for 2 seconds
+  // // Test servo classes
+  // servoMotors.pinch();
   
   
   
-  // Grab servo   
-  for(int i = 180; i > 0; i-=3) 
-  {
-    servoGrab.write(i);
-    delay(10);
-  }
-  delay(225);
-  for(int i = 0; i < 180; i+=3) 
-  {
-    servoGrab.write(i);
-    delay(10);
-  }
-  delay(225);
+  // // Grab servo   
+  // for(int i = 180; i > 0; i-=3) 
+  // {
+  //   servoGrab.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
+  // for(int i = 0; i < 180; i+=3) 
+  // {
+  //   servoGrab.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
 
-  // Bottom servo   
-  for(int i = 180; i > 0; i-=3) 
-  {
-    servoBottom.write(i);
-    servoGrab.write(i);
-    delay(10);
-    servoGrab.write(i);
-  }
-  delay(225);
-  for(int i = 0; i < 180; i+=3) 
-  {
-    servoBottom.write(i);
-    delay(10);
-  }
-  delay(225);
+  // // Bottom servo   
+  // for(int i = 180; i > 0; i-=3) 
+  // {
+  //   servoBottom.write(i);
+  //   servoGrab.write(i);
+  //   delay(10);
+  //   servoGrab.write(i);
+  // }
+  // delay(225);
+  // for(int i = 0; i < 180; i+=3) 
+  // {
+  //   servoBottom.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
 
-    // Right servo   
-  for(int i = 180; i > 0; i-=3) 
-  {
-    servoRight.write(i);
-    delay(10);
-  }
-  delay(225);
-  for(int i = 0; i < 180; i+=3) 
-  {
-    servoRight.write(i);
-    delay(10);
-  }
-  delay(225);
+  //   // Right servo   
+  // for(int i = 180; i > 0; i-=3) 
+  // {
+  //   servoRight.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
+  // for(int i = 0; i < 180; i+=3) 
+  // {
+  //   servoRight.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
 
-      // Left servo   
-  for(int i = 180; i > 0; i-=3) 
-  {
-    servoLeft.write(i);
-    delay(10);
-  }
-  delay(225);
-  for(int i = 0; i < 180; i+=3) 
-  {
-    servoLeft.write(i);
-    delay(10);
-  }
-  delay(225);
+  //     // Left servo   
+  // for(int i = 180; i > 0; i-=3) 
+  // {
+  //   servoLeft.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
+  // for(int i = 0; i < 180; i+=3) 
+  // {
+  //   servoLeft.write(i);
+  //   delay(10);
+  // }
+  // delay(225);
 }
 
 

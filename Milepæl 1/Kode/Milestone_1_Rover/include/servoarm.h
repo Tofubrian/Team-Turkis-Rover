@@ -4,29 +4,7 @@
 #include <ESP32Servo.h>
 
 
-// class RoverArm {
-// public:
-//     // Initialiserer servoerne og knytter dem til deres pins
-//     void begin();
 
-// private:
-//     // Servo objekter
-//     Servo servoGrab;
-//     Servo servoBottom;
-//     Servo servoRight;
-//     Servo servoLeft;
-
-//     // Pin-konfigurationer til hver servo
-//     const int grabPin = 17;
-//     const int bottomPin = 18;
-//     const int rightPin = 5;
-//     const int leftPin = 16;
-
-//     // Pulslængde grænser
-//     const int minPulse = 500;
-//     const int maxPulse = 2500;
-//     const int servoFrequency = 50; // 50 Hz
-// };
 class RoverArm {
 private:
     // Struct to hold the servo pin configuration
@@ -73,12 +51,22 @@ public:
         servoLeft.setPeriodHertz(servoFrequency);
         servoLeft.attach(pins.leftPin, minPulse, maxPulse);
     }
+
+    // Function to pinch (close the grab servo)
     void pinch() {
-        for(int i = 180; i < 0; i+=3)
-        {
+        // Close the grab servo (move from 180 to 0 degrees)
+        for (int i = 180; i > 0; i -= 3) {
             servoGrab.write(i);
-            delay(10);
+            delay(20);  // Slightly longer delay to allow the servo to move
         }
     }
-    
+
+    // Function to open the grab servo
+    void open() {
+        // Open the grab servo (move from 0 to 180 degrees)
+        for (int i = 0; i < 180; i += 3) {
+            servoGrab.write(i);
+            delay(20);  // Slightly longer delay
+        }
+    }
 };
