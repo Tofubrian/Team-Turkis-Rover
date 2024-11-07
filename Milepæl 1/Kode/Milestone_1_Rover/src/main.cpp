@@ -36,15 +36,21 @@ void setup()
 
 void loop() 
 {
-  
-  // Test servo pinch functionality
   servoMotors.pinch();  // Close the grab servo
   delay(2000);  // Wait for 2 seconds
 
   servoMotors.open();  // Open the grab servo
   delay(2000);  // Wait for 2 seconds
-  // // Test servo classes
-  // servoMotors.pinch();
+  
+ servoMotors.BottomLeft(); //Move the bottom servo right
+  delay(2000); //Wait for 2 seconds
+
+  servoMotors.BottomRight(); //Move the bottom servo left
+  delay(2000); //Wait for 2 seconds
+
+ 
+
+  
   
   
   
