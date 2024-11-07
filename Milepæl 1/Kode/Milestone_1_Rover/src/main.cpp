@@ -3,7 +3,7 @@
 #include <VL53L0X.h>
 #include <motorstyring_CLASSES.h>
 #include <ESP32Servo.h>
-// #include <servoarm.h>
+#include <servoarm.h>
 
 // Definer pins osv for rover arm her
 Servo servoGrab;
@@ -18,17 +18,17 @@ void setup()
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
 
-  servoGrab.setPeriodHertz(50);    
-  servoGrab.attach(17, 500, 2500);
+  // servoGrab.setPeriodHertz(50);    
+  // servoGrab.attach(17, 500, 2500);
 
-  servoBottom.setPeriodHertz(50);    
-  servoBottom.attach(18, 500, 2500);
+  // servoBottom.setPeriodHertz(50);    
+  // servoBottom.attach(18, 500, 2500);
   
-  servoRight.setPeriodHertz(50);    
-  servoRight.attach(5, 500, 2500);
+  // servoRight.setPeriodHertz(50);    
+  // servoRight.attach(5, 500, 2500);
   
-  servoLeft.setPeriodHertz(50);    
-  servoLeft.attach(16, 500, 2500);
+  // servoLeft.setPeriodHertz(50);    
+  // servoLeft.attach(16, 500, 2500);
 
 }
 

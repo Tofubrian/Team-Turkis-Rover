@@ -1,32 +1,29 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h> 
-/*
- * This ESP32 code is created by esp32io.com
- *
- * This ESP32 code is released in the public domain
- *
- * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-servo-motor
- */
-#define SERVO_PIN  // ESP32 pin GPIO26 connected to servo motor
+#include <ESP32Servo.h>
 
-Servo servoMotor;
 
-void setup() {
-  servoMotor.attach(SERVO_PIN);  // attaches the servo on ESP32 pin
-}
+class RoverArm {
+public:
+    // Initialiserer servoerne og knytter dem til deres pins
+    void begin();
 
-void loop() {
-  // rotates from 0 degrees to 180 degrees
-  for (int pos = 0; pos <= 180; pos += 1) {
-    // in steps of 1 degree
-    servoMotor.write(pos);
-    delay(15); // waits 15ms to reach the position
-  }
+private:
+    // Servo objekter
+    Servo servoGrab;
+    Servo servoBottom;
+    Servo servoRight;
+    Servo servoLeft;
 
-  // rotates from 180 degrees to 0 degrees
-  for (int pos = 180; pos >= 0; pos -= 1) {
-    servoMotor.write(pos);
-    delay(15); // waits 15ms to reach the position
-  }
-}
+    // Pin-konfigurationer til hver servo
+    const int grabPin = 17;
+    const int bottomPin = 18;
+    const int rightPin = 5;
+    const int leftPin = 16;
+
+    // Pulslængde grænser
+    const int minPulse = 500;
+    const int maxPulse = 2500;
+    const int servoFrequency = 50; // 50 Hz
+};
