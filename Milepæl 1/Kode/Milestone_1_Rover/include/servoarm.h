@@ -71,14 +71,14 @@ public:
     }
     void BottomLeft() {
         // Open the grab servo (move from 0 to 180 degrees)
-        for (int i = 0; i < 180; i += 2) {
+        for (int i = 0; i < 180; i += 4) {
             servoBottom.write(i);
             delay(20);  // Slightly longer delay
         }
     }
     void BottomRight() {
         // Open the grab servo (move from 0 to 180 degrees)
-        for (int i = 180; i < 0; i -= 2) {
+        for (int i = 180; i > 0; i -= 4) {
             servoBottom.write(i);
             delay(20);  // Slightly longer delay
         }
