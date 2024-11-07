@@ -106,7 +106,7 @@ public:
     }
     void ArmDown() {
         // Open the grab servo (move from 0 to 180 degrees)
-        for (int i = 0; i < 180; i += 2) {
+        for (int i = 0; i < 130; i += 2) {
             servoLeft.write(i);
             delay(20);  // Slightly longer delay
         }
