@@ -48,10 +48,17 @@
 //   servoMotors.BottomRight(); //Move the bottom servo left
 //   delay(2000); //Wait for 2 seconds
 
+ servoMotors.ArmUp();
+ delay(2000);
  
+  servoMotors.ArmDown();
+ delay(2000);
 
+ servoMotors.ArmForward();
+ delay(2000);
   
-  
+  servoMotors.ArmBackward();
+  delay(2000);
   
   
 //   // // Grab servo   

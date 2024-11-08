@@ -24,10 +24,10 @@ private:
     const int servoFrequency = 50; // PWM frequency (50 Hz)
 
     // Servo objects
-    Servo servoGrab;
-    Servo servoBottom;
-    Servo servoRight;
-    Servo servoLeft;
+    Servo servoGrab; //Åben luk
+    Servo servoBottom; //Rotation
+    Servo servoRight; //Frem og tilbage
+    Servo servoLeft; // Op og ned
 
 public:
     // Constructor to initialize the servo pins
@@ -80,6 +80,34 @@ public:
         // Open the grab servo (move from 0 to 180 degrees)
         for (int i = 180; i > 0; i -= 4) {
             servoBottom.write(i);
+            delay(20);  // Slightly longer delay
+        }
+    }
+    void ArmForward() {
+        // Open the grab servo (move from 0 to 180 degrees)
+        for (int i = 180; i > 0; i -= 2) {
+            servoRight.write(i);
+            delay(20);  // Slightly longer delay
+        }
+    }
+    void ArmBackward() {
+        // Open the grab servo (move from 0 to 180 degrees)
+        for (int i = 0; i < 180; i += 2) {
+            servoRight.write(i);
+            delay(20);  // Slightly longer delay
+        }
+    }
+     void ArmUp() {
+        // Open the grab servo (move from 0 to 180 degrees)
+        for (int i = 180; i > 0; i -= 3) {
+            servoLeft.write(i);
+            delay(20);  // Slightly longer delay
+        }
+    }
+    void ArmDown() {
+        // Open the grab servo (move from 0 to 180 degrees)
+        for (int i = 0; i < 130; i += 2) {
+            servoLeft.write(i);
             delay(20);  // Slightly longer delay
         }
     }
