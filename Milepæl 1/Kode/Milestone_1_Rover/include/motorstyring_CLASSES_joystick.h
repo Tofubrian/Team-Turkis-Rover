@@ -1,77 +1,12 @@
 
-#ifndef MOTORSTYRING_CLASSES_H
-#define MOTORSTYRING_CLASSES_H
+#ifndef MOTORSTYRING_CLASSES_JOYSTICK_H
+#define MOTORSTYRING_CLASSES_JOYSTICK_H
 
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h> 
 
-// class SensorController {
-// private:
-//     VL53L0X sensorRight;
-//     VL53L0X sensorLeft;
-//     VL53L0X sensorFront;
-//     const int XSHUT_RIGHT, XSHUT_LEFT, XSHUT_FRONT;
-
-// public:
-//     SensorController(int xshutRight, int xshutLeft, int xshutFront)
-//         : XSHUT_RIGHT(xshutRight), XSHUT_LEFT(xshutLeft), XSHUT_FRONT(xshutFront) {
-//         initSensors();
-//     }
-
-//     void initSensors() {
-        
-//         pinMode(XSHUT_LEFT, OUTPUT);
-//         pinMode(XSHUT_RIGHT, OUTPUT);
-//         pinMode(XSHUT_FRONT, OUTPUT);
-
-//         digitalWrite(XSHUT_LEFT, LOW);
-//         digitalWrite(XSHUT_RIGHT, LOW);
-//         digitalWrite(XSHUT_FRONT, LOW);
-//         delay(10);
-
-//         initSensor(XSHUT_LEFT, sensorLeft, 0x31, "left");
-//         initSensor(XSHUT_RIGHT, sensorRight, 0x30, "right");
-//         initSensor(XSHUT_FRONT, sensorFront, 0x29, "front");
-//     }
-
-//     void initSensor(int xshutPin, VL53L0X& sensor, uint8_t address, const char* name) {
-//         digitalWrite(xshutPin, HIGH);
-//         delay(10);
-//         if (!sensor.init()) {
-//             Serial.print("Failed to initialize ");
-//             Serial.print(name);
-//             Serial.println(" sensor!");
-//             while (1) {}
-//         }
-//         sensor.setAddress(address);
-//         sensor.startContinuous();
-//     }
-
-//     int getDistanceLeft() {
-//         return sensorLeft.readRangeSingleMillimeters();
-//     }
-
-//     int getDistanceRight() {
-//         return sensorRight.readRangeSingleMillimeters();
-//     }
-
-//     int getDistanceFront() {
-//         return sensorFront.readRangeSingleMillimeters();
-//     }
-
-//     void checkTimeouts() {
-//         if (sensorLeft.timeoutOccurred()) { 
-//             Serial.println(" TIMEOUT on Left Sensor");
-//         }
-//         if (sensorRight.timeoutOccurred()) { 
-//             Serial.println(" TIMEOUT on Right Sensor");
-//         }
-//         if (sensorFront.timeoutOccurred()) { 
-//             Serial.println(" TIMEOUT on Front Sensor");
-//         }
-//     }
-// };
+// Kode opdateret med kontrol af joystick forslag
 
 class MotorController {
 private:
@@ -217,4 +152,4 @@ public:
     }
 };
 
-#endif // MOTORSTYRING_CLASSES_H
+#endif // MOTORSTYRING_CLASSES_JOYSTICK_H
