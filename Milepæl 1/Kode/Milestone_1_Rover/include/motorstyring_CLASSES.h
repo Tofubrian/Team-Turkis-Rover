@@ -117,43 +117,47 @@ public:
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse for motor B
     }
 
-    void accelerateForward(int targetSpeed, int increment = 5, int delayMs = 100) {
-        static int currentSpeed = 0; // Maintain current speed
-        static unsigned long lastUpdateTime = 0; // Track the last update time
+    // void accelerateForward(int targetSpeed, int increment = 5, int delayMs = 100) {
+    //     static int currentSpeed = 0; // Maintain current speed
+    //     static unsigned long lastUpdateTime = 0; // Track the last update time
 
-        unsigned long currentTime = millis();
-        // Check if enough time has passed to update the speed
-        if (currentTime - lastUpdateTime >= delayMs) {
-            lastUpdateTime = currentTime;
+    //     unsigned long currentTime = millis();
+    //     // Check if enough time has passed to update the speed
+    //     if (currentTime - lastUpdateTime >= delayMs) {
+    //         lastUpdateTime = currentTime;
 
-            // Use a for loop to increment the speed
-            for (int speed = currentSpeed; speed <= targetSpeed; speed += increment) {
-                // Update motor speeds
-                Serial.println("Accelerating.");
-                Serial.println(speed);
-                ledcWrite(pwmChannelA1, speed); // Activate motor A
-                ledcWrite(pwmChannelA2, 0);      // Deactivate reverse for motor A
-                ledcWrite(pwmChannelB1, speed); // Activate motor B
-                ledcWrite(pwmChannelB2, 0);      // Deactivate reverse for motor B
+    //         // Use a for loop to increment the speed
+    //         for (int speed = currentSpeed; speed <= targetSpeed; speed += increment) {
+    //             // Update motor speeds
+    //             Serial.println("Accelerating.");
+    //             Serial.println(speed);
+    //             ledcWrite(pwmChannelA1, speed); // Activate motor A
+    //             ledcWrite(pwmChannelA2, 0);      // Deactivate reverse for motor A
+    //             ledcWrite(pwmChannelB1, speed); // Activate motor B
+    //             ledcWrite(pwmChannelB2, 0);      // Deactivate reverse for motor B
 
-                // Delay for a smoother acceleration
-                delay(delayMs);
+    //             // Delay for a smoother acceleration
+    //             delay(delayMs);
 
-                // Break if we've reached the target speed
-                if (speed >= targetSpeed) {
-                    currentSpeed = targetSpeed; // Update currentSpeed to the target
-                    Serial.println("At full speed.");
-                    break; // Exit the loop once we've reached full speed
-                }
-            }
-        }
-    }
+    //             // Break if we've reached the target speed
+    //             if (speed >= targetSpeed) {
+    //                 currentSpeed = targetSpeed; // Update currentSpeed to the target
+    //                 Serial.println("At full speed.");
+    //                 break; // Exit the loop once we've reached full speed
+    //             }
+    //         }
+    //     }
+    // }
 
 
 
     void forward(int speed = 255) {
-        accelerateForward(speed);
-        
+        ledcWrite(pwmChannelA1, speed);     // Forward motor A
+        ledcWrite(pwmChannelA2, 0); // Deactivate forward A
+        ledcWrite(pwmChannelB1, speed);     // Forward motor B
+        ledcWrite(pwmChannelB2, 0); // Deactivate forward B
+
+        Serial.println("Moving forward");
     }
 
     void backward(int speed = 255) {

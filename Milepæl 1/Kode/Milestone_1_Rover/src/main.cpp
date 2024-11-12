@@ -200,6 +200,32 @@ void setup() {
   }
   sensorFront.setAddress(0x29); // Set unique address for front sensor
   sensorFront.startContinuous();
+
+  // // Setup code for joystick mapping
+  // // Connect to WiFi
+  // WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(1000);
+  //   Serial.println("Connecting to WiFi...");
+  // }
+  // Serial.println("Connected to WiFi");
+
+  // // Initialize motors
+  // initMotors();
+
+  // // Route to handle joystick data (GET request)
+  // server.on("/joystick", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   if (request->hasParam("data")) {
+  //     String data = request->getParam("data")->value();
+  //     handleJoystick(data);
+  //   }
+  //   request->send(200, "text/plain", "Joystick Data Received");
+  // });
+
+  // // Start the server
+  // server.begin();
+
+
 }
 
 void loop() {
