@@ -5,14 +5,127 @@
 #include <ESP32Servo.h>
 #include <servoarm.h>
 
+// Definer pins osv for rover arm her
+// Servo servoGrab;
+// Servo servoBottom;
+// Servo servoRight;
+// Servo servoLeft;
+
+// RoverArm servoMotors(17, 18, 5, 16); // Grab, Bunden, Højre, Venstre
+
+// void setup() 
+// {
+//   ESP32PWM::allocateTimer(0);
+//   ESP32PWM::allocateTimer(1);
+//   ESP32PWM::allocateTimer(2);
+//   ESP32PWM::allocateTimer(3);
+
+//   // servoGrab.setPeriodHertz(50);    
+//   // servoGrab.attach(17, 500, 2500);
+
+//   // servoBottom.setPeriodHertz(50);    
+//   // servoBottom.attach(18, 500, 2500);
+  
+//   // servoRight.setPeriodHertz(50);    
+//   // servoRight.attach(5, 500, 2500);
+  
+//   // servoLeft.setPeriodHertz(50);    
+//   // servoLeft.attach(16, 500, 2500);
+
+// }
+
+// void loop() 
+// {
+//   servoMotors.pinch();  // Close the grab servo
+//   delay(2000);  // Wait for 2 seconds
+
+//   servoMotors.open();  // Open the grab servo
+//   delay(2000);  // Wait for 2 seconds
+  
+//  servoMotors.BottomLeft(); //Move the bottom servo right
+//   delay(2000); //Wait for 2 seconds
+
+//   servoMotors.BottomRight(); //Move the bottom servo left
+//   delay(2000); //Wait for 2 seconds
+
+//  servoMotors.ArmUp();
+//  delay(2000);
+ 
+//   servoMotors.ArmDown();
+//  delay(2000);
+
+//  servoMotors.ArmForward();
+//  delay(2000);
+  
+//   servoMotors.ArmBackward();
+//   delay(2000);
+  
+  
+//   // // Grab servo   
+//   // for(int i = 180; i > 0; i-=3) 
+//   // {
+//   //   servoGrab.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+//   // for(int i = 0; i < 180; i+=3) 
+//   // {
+//   //   servoGrab.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+
+//   // // Bottom servo   
+//   // for(int i = 180; i > 0; i-=3) 
+//   // {
+//   //   servoBottom.write(i);
+//   //   servoGrab.write(i);
+//   //   delay(10);
+//   //   servoGrab.write(i);
+//   // }
+//   // delay(225);
+//   // for(int i = 0; i < 180; i+=3) 
+//   // {
+//   //   servoBottom.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+
+//   //   // Right servo   
+//   // for(int i = 180; i > 0; i-=3) 
+//   // {
+//   //   servoRight.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+//   // for(int i = 0; i < 180; i+=3) 
+//   // {
+//   //   servoRight.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+
+//   //     // Left servo   
+//   // for(int i = 180; i > 0; i-=3) 
+//   // {
+//   //   servoLeft.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+//   // for(int i = 0; i < 180; i+=3) 
+//   // {
+//   //   servoLeft.write(i);
+//   //   delay(10);
+//   // }
+//   // delay(225);
+// }
+
 
 // // Alt fungerende kode herunder
 
 int incomingByte = 0; // for incoming serial data
 
-// Define joystick pins
-const int joystickXPin = 39;  // Joystick X-axis pin
-const int joystickYPin = 36;  // Joystick Y-axis pin
+
 
 MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
@@ -39,145 +152,97 @@ const int LED_OUTPUT_PIN = 33;
 
 const int DELAY_MS = 0;  // delay between fade increments
 
-const int JOYSTICK_CENTER = 512; // Center of the joystick // 2048
-const int JOYSTICK_THRESHOLD = 50; // Dead zone threshold // 200
-const int JOYSTICK_MAX_VALUE = 1023; // Maximum joystick reading on ESP32 // 4095
-const int MOTOR_MAX_SPEED = 255; // Maximum motor speed
-
-// // Thresholds for joystick dead zone
-// const int deadZoneThreshold = 50;   // Modify as needed
-// const int maxSpeed = 255;           // Maximum speed for motors
-
 void setup() {
+
+// ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
+  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+
+  // ledcAttachPin(uint8_t pin, uint8_t channel);
+  ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
   Serial.begin(115200);
+  Wire.begin(); // Begin I2C communication
 
-// // ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
-//   ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+  // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront
+  pinMode(XSHUT_LEFT, OUTPUT);
+  pinMode(XSHUT_RIGHT, OUTPUT);
+  pinMode(XSHUT_FRONT, OUTPUT);
 
-//   // ledcAttachPin(uint8_t pin, uint8_t channel);
-//   ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
-//   Serial.begin(115200);
-//   Wire.begin(); // Begin I2C communication
+  // Deactivate both sensors at the beginning
+  digitalWrite(XSHUT_LEFT, LOW);
+  digitalWrite(XSHUT_RIGHT, LOW);
+  digitalWrite(XSHUT_FRONT, LOW);
+  delay(10);  // Small delay for sensor initialization
 
-//   // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront
-//   pinMode(XSHUT_LEFT, OUTPUT);
-//   pinMode(XSHUT_RIGHT, OUTPUT);
-//   pinMode(XSHUT_FRONT, OUTPUT);
+  // Initialize the left sensor
+  digitalWrite(XSHUT_LEFT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorLeft.init()) {
+    Serial.println("Failed to initialize left sensor!");
+    while (1) {}
+  }
+  sensorLeft.setAddress(0x31); // Set unique address for left sensor
+  sensorLeft.startContinuous();
 
-//   // Deactivate both sensors at the beginning
-//   digitalWrite(XSHUT_LEFT, LOW);
-//   digitalWrite(XSHUT_RIGHT, LOW);
-//   digitalWrite(XSHUT_FRONT, LOW);
-//   delay(10);  // Small delay for sensor initialization
+  // Initialize the right sensor
+  digitalWrite(XSHUT_RIGHT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorRight.init()) {
+    Serial.println("Failed to initialize right sensor!");
+    while (1) {}
+  }
+  sensorRight.setAddress(0x30); // Set unique address for right sensor
+  sensorRight.startContinuous();
 
-//   // Initialize the left sensor
-//   digitalWrite(XSHUT_LEFT, HIGH);
-//   delay(10); // Allow time for sensor startup
-//   if (!sensorLeft.init()) {
-//     Serial.println("Failed to initialize left sensor!");
-//     while (1) {}
-//   }
-//   sensorLeft.setAddress(0x31); // Set unique address for left sensor
-//   sensorLeft.startContinuous();
+  // Initialize the right sensor
+  digitalWrite(XSHUT_FRONT, HIGH);
+  delay(10); // Allow time for sensor startup
+  if (!sensorFront.init()) {
+    Serial.println("Failed to initialize Front sensor!");
+    while (1) {}
+  }
+  sensorFront.setAddress(0x29); // Set unique address for front sensor
+  sensorFront.startContinuous();
 
-//   // Initialize the right sensor
-//   digitalWrite(XSHUT_RIGHT, HIGH);
-//   delay(10); // Allow time for sensor startup
-//   if (!sensorRight.init()) {
-//     Serial.println("Failed to initialize right sensor!");
-//     while (1) {}
-//   }
-//   sensorRight.setAddress(0x30); // Set unique address for right sensor
-//   sensorRight.startContinuous();
+  // // Setup code for joystick mapping
+  // // Connect to WiFi
+  // WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(1000);
+  //   Serial.println("Connecting to WiFi...");
+  // }
+  // Serial.println("Connected to WiFi");
 
-//   // Initialize the right sensor
-//   digitalWrite(XSHUT_FRONT, HIGH);
-//   delay(10); // Allow time for sensor startup
-//   if (!sensorFront.init()) {
-//     Serial.println("Failed to initialize Front sensor!");
-//     while (1) {}
-//   }
-//   sensorFront.setAddress(0x29); // Set unique address for front sensor
-//   sensorFront.startContinuous();
+  // // Initialize motors
+  // initMotors();
+
+  // // Route to handle joystick data (GET request)
+  // server.on("/joystick", HTTP_GET, [](AsyncWebServerRequest *request){
+  //   if (request->hasParam("data")) {
+  //     String data = request->getParam("data")->value();
+  //     handleJoystick(data);
+  //   }
+  //   request->send(200, "text/plain", "Joystick Data Received");
+  // });
+
+  // // Start the server
+  // server.begin();
 
 
-
-};
+}
 
 void loop() {
-  int xValue = analogRead(joystickXPin);  // Read X-axis
-  int yValue = analogRead(joystickYPin);  // Read Y-axis
 
-  // Calculate the deviation from the center
-  int xDeviation = xValue - JOYSTICK_CENTER;
-  int yDeviation = yValue - JOYSTICK_CENTER;
+  // motors.forward();
+  // delay(500);
 
-  // Apply dead zone
-  int speedX = (abs(xDeviation) > JOYSTICK_THRESHOLD) ? map(abs(xDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
-  int speedY = (abs(yDeviation) > JOYSTICK_THRESHOLD) ? map(abs(yDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
+  // motors.backward();
+  // delay(500);
 
-  // Determine motor direction and speed
-  if (yDeviation > JOYSTICK_THRESHOLD) {
-      motors.forward(speedY);  // Move forward
-      Serial.println("Moving forward");
-  } else if (yDeviation < -JOYSTICK_THRESHOLD) {
-      motors.backward(speedY);  // Move backward
-      Serial.println("Moving backward");
-  } else if (xDeviation > JOYSTICK_THRESHOLD) {
-      motors.turnRight(speedX);  // Turn right
-      Serial.println("Turning right");
-  } else if (xDeviation < -JOYSTICK_THRESHOLD) {
-      motors.turnLeft(speedX);  // Turn left
-      Serial.println("Turning left");
-  } else {
-      motors.stop();  // Joystick is in the dead zone, stop motors
-      Serial.println("Stopping");
-  }
+  // motors.turnRight();
+  // delay(500);
 
-  delay(100);  // Small delay to smooth movement
-
-  // Serial.println("Made it into the loop");
-
-  // int xValue = analogRead(joystickXPin);  // Read X-axis
-  // int yValue = analogRead(joystickYPin);  // Read Y-axis
-
-  // // Map joystick values to motor speed (0-255)
-  // int speedX = map(abs(xValue - 512), 0, 512, 0, maxSpeed);
-  // int speedY = map(abs(yValue - 512), 0, 512, 0, maxSpeed);
-
-  // // Determine the direction based on joystick position
-  // if (yValue > 512 + deadZoneThreshold) {
-  //   motors.forward(speedY);  // Forward
-  //   Serial.println("Moving forward ");
-  //   Serial.println(speedY);
-  // } 
-  // else if (yValue < 512 - deadZoneThreshold) {
-  //   motors.backward(speedY);  // Backward
-  //   Serial.println("Moving backwards ");
-  //   Serial.println(speedY);
-  // } 
-  // else if (xValue > 512 + deadZoneThreshold) {
-  //   motors.turnRight(speedX);  // Turn right
-  //   Serial.println("Moving right ");
-  //   Serial.println(speedY);
-  // } 
-  // else if (xValue < 512 - deadZoneThreshold) {
-  //   motors.turnLeft(speedX);  // Turn left
-  //   Serial.println("Moving left ");
-  //   Serial.println(speedY);
-  // } 
-  // else {
-  //   motors.stop();  // Joystick is in the dead zone, stop motors
-  // }
-
-  // delay(100);  // Small delay to smooth movement
-};
-
-
-
-
-// KODE DER KAN KØRE AUTOMATISK
-
+  // motors.turnLeft();
+  // delay(500);
   // int distanceLeft = sensorLeft.readRangeSingleMillimeters();
   // int distanceRight = sensorRight.readRangeSingleMillimeters();
   // int distanceFront = sensorFront.readRangeSingleMillimeters();
@@ -227,5 +292,5 @@ void loop() {
   // if (sensorFront.timeoutOccurred()) { 
   //   Serial.println(" TIMEOUT on Front Sensor");
   // }
-
+};
 
