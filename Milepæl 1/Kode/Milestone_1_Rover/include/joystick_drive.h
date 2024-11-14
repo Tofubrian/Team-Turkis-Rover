@@ -32,6 +32,11 @@ void manualMode() {
     int joyPinX = analogRead(ManualpinX); // Read X-axis value  
     int joyPinY = analogRead(ManualpinY); // Read X-axis value  
 
+    Serial.println("X value is ");
+    Serial.println(joyPinX);
+    Serial.println("Y value is ");
+    Serial.println(joyPinY);
+
     if (joyPinY > joystick_center + joystick_threshold) {
         motors.forward();
         Serial.println("Going forward");
@@ -48,9 +53,6 @@ void manualMode() {
         motors.stop();
         Serial.println("Idle mode");
     }
-    
-    // Delay here for smooth movements with the joystick
-    delay(100);
 
     if (joyPinY < joystick_center - joystick_threshold) {
         motors.backward();
