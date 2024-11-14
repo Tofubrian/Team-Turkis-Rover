@@ -22,6 +22,10 @@ private:
     const int minPulse = 500;   // Minimum pulse width (in microseconds)
     const int maxPulse = 2500;  // Maximum pulse width (in microseconds)
     const int servoFrequency = 50; // PWM frequency (50 Hz)
+    const int defaultGrabPosition = 0; 
+    const int defaultBottomPosition = 90;
+    const int defaultRightPosition = 90;
+    const int defaultLeftPosition = 90;
 
     // Servo objects
     Servo servoGrab; //Åben luk
@@ -52,6 +56,29 @@ public:
         servoLeft.attach(pins.leftPin, minPulse, maxPulse);
     }
 
+    // Helper function to move a servo to a specific position gradually
+    void moveServoToPosition(Servo &servo, int currentPosition, int targetPosition, int stepDelay = 20) {
+        if (currentPosition < targetPosition) {
+            for (int pos = currentPosition; pos <= targetPosition; pos++) {
+                servo.write(pos);
+                delay(stepDelay);
+            }
+        } else if (currentPosition > targetPosition) {
+            for (int pos = currentPosition; pos >= targetPosition; pos--) {
+                servo.write(pos);
+                delay(stepDelay);
+            }
+        }
+    }
+
+    // Moving arm into default position
+    void moveToDefaultPosition() {
+    moveServoToPosition(servoGrab, servoGrab.read(), defaultGrabPosition);
+    moveServoToPosition(servoBottom, servoBottom.read(), defaultBottomPosition);
+    moveServoToPosition(servoRight, servoRight.read(), defaultRightPosition);
+    moveServoToPosition(servoLeft, servoLeft.read(), defaultLeftPosition);
+    }
+
     // Function to pinch (close the grab servo)
     void pinch() {
         // Close the grab servo (move from 180 to 0 degrees)
@@ -67,6 +94,8 @@ public:
         for (int i = 0; i < 180; i += 3) {
             servoGrab.write(i);
             delay(20);  // Slightly longer delay
+            Serial.println("Open value is ");
+            Serial.println(i);
         }
     }
     void BottomLeft() {

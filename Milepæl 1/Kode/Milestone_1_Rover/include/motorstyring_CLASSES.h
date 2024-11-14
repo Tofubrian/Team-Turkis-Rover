@@ -95,11 +95,27 @@ public:
         ledcWrite(pwmChannelB2, 0);
     }
 
-        void turnSmoothLeft(int speed = 255, int halfSpeed = 112) {
-        ledcWrite(pwmChannelA1, speed);
-        ledcWrite(pwmChannelA2, 0);
-        ledcWrite(pwmChannelB1, halfSpeed);
-        ledcWrite(pwmChannelB2, 0);
+    void turnSmoothLeft(int speed = 255, int halfSpeed = 112) {
+    ledcWrite(pwmChannelA1, speed);
+    ledcWrite(pwmChannelA2, 0);
+    ledcWrite(pwmChannelB1, halfSpeed);
+    ledcWrite(pwmChannelB2, 0);
+    }
+
+    void backwardSmoothRight(int speed = 255, int halfSpeed = 112) {
+    ledcWrite(pwmChannelA1, 0);     // Deactivate forward
+    ledcWrite(pwmChannelA2, halfSpeed); // Activate reverse for motor A
+    ledcWrite(pwmChannelB1, 0);     // Deactivate forward
+    ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
+    Serial.println("Moving back");
+    }
+    
+    void backwardSmoothLeft(int speed = 255, int halfSpeed = 112) {
+    ledcWrite(pwmChannelA1, 0);     // Deactivate forward
+    ledcWrite(pwmChannelA2, speed); // Activate reverse for motor A
+    ledcWrite(pwmChannelB1, 0);     // Deactivate forward
+    ledcWrite(pwmChannelB2, halfSpeed); // Activate reverse for motor B
+    Serial.println("Moving back");
     }
 
     void forwardSaveRight() {

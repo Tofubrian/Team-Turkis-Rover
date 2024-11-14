@@ -11,8 +11,9 @@
 int incomingByte = 0; // for incoming serial data
 
 // Define joystick pins
-const int joystickXPin = 39;  // Joystick X-axis pin
-const int joystickYPin = 36;  // Joystick Y-axis pin
+const int joystickXPin = 35;  // Joystick X-axis pin
+const int joystickYPin = 34;  // Joystick Y-axis pin
+const int joystickClick = 36;  // Joystick Y-axis pin
 
 MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
@@ -39,14 +40,56 @@ const int LED_OUTPUT_PIN = 33;
 
 const int DELAY_MS = 0;  // delay between fade increments
 
-const int JOYSTICK_CENTER = 512; // Center of the joystick // 2048
-const int JOYSTICK_THRESHOLD = 50; // Dead zone threshold // 200
-const int JOYSTICK_MAX_VALUE = 1023; // Maximum joystick reading on ESP32 // 4095
-const int MOTOR_MAX_SPEED = 255; // Maximum motor speed
+// const int JOYSTICK_CENTER = 512; // Center of the joystick // 2048
+// const int JOYSTICK_THRESHOLD = 50; // Dead zone threshold // 200
+// const int JOYSTICK_MAX_VALUE = 1023; // Maximum joystick reading on ESP32 // 4095
+// const int MOTOR_MAX_SPEED = 255; // Maximum motor speed
 
 // // Thresholds for joystick dead zone
 // const int deadZoneThreshold = 50;   // Modify as needed
 // const int maxSpeed = 255;           // Maximum speed for motors
+// Constants
+const int JOY_MAX = 4095;
+const int JOY_MIN = 0;
+const int JOY_CENTER = 2047;
+const int Y_FORWARD_THRESHOLD = 2097;
+const int Y_BACKWARD_THRESHOLD = 1997;
+const int X_RIGHT_THRESHOLD = 2097;
+const int X_LEFT_THRESHOLD = 1997;
+
+void checkJoystickDirection(int xValue, int yValue) {
+    if (yValue < Y_FORWARD_THRESHOLD && yValue > Y_BACKWARD_THRESHOLD && xValue < X_RIGHT_THRESHOLD && xValue < X_LEFT_THRESHOLD) {
+      motors.stop();
+      // Serial.println("FULL STOP");
+    }
+    else if (yValue > Y_FORWARD_THRESHOLD) {
+      motors.forward();
+      // Serial.println("Forward");
+    }
+    else if (yValue > Y_FORWARD_THRESHOLD && xValue > X_LEFT_THRESHOLD) {
+      motors.turnSmoothLeft();
+      // Serial.println("Turning Left");
+    }
+    else if (yValue > Y_FORWARD_THRESHOLD && xValue > X_RIGHT_THRESHOLD) {
+      motors.turnSmoothRight();
+      // Serial.println("Turning Right");
+    }
+    else if (yValue < Y_BACKWARD_THRESHOLD) {
+      motors.backward();
+      // Serial.println("Moving back");
+    }
+    else if (yValue < Y_BACKWARD_THRESHOLD && xValue > X_LEFT_THRESHOLD) {
+      motors.backwardSmoothLeft();
+      // Serial.println("Moving back left");
+    }
+    else if (yValue < Y_BACKWARD_THRESHOLD && xValue < X_RIGHT_THRESHOLD) {
+      motors.backwardSmoothRight();
+      // Serial.println("Moving back right");
+    }
+    else {
+
+    }
+}
 
 void setup() {
   Serial.begin(115200);
@@ -105,36 +148,83 @@ void setup() {
 };
 
 void loop() {
+
+
+
   int xValue = analogRead(joystickXPin);  // Read X-axis
   int yValue = analogRead(joystickYPin);  // Read Y-axis
+  int Click = analogRead(joystickClick);  // Read Y-axis
+  
+  int xValue10bit = xValue / 4;
+  int yValue10bit = yValue / 4;
+  int Click10bit = Click / 4;
+  // Call control function with joystick values
+  // checkJoystickDirection(xValue, yValue);
+  Serial.println("xValue is ");
+  Serial.println(xValue10bit);
+  delay(1000);
+  Serial.println("yValue is ");
+  Serial.println(yValue10bit);
+  delay(1000);
+  Serial.println("Click is ");
+  Serial.println(Click10bit);
+  delay(1000);
+  
 
-  // Calculate the deviation from the center
-  int xDeviation = xValue - JOYSTICK_CENTER;
-  int yDeviation = yValue - JOYSTICK_CENTER;
+  delay(100);  // Add a short delay to smooth out movement
 
-  // Apply dead zone
-  int speedX = (abs(xDeviation) > JOYSTICK_THRESHOLD) ? map(abs(xDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
-  int speedY = (abs(yDeviation) > JOYSTICK_THRESHOLD) ? map(abs(yDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
+//   int xValue = analogRead(joystickXPin);  // Read X-axis
+//   int yValue = analogRead(joystickYPin);  // Read Y-axis
 
-  // Determine motor direction and speed
-  if (yDeviation > JOYSTICK_THRESHOLD) {
-      motors.forward(speedY);  // Move forward
-      Serial.println("Moving forward");
-  } else if (yDeviation < -JOYSTICK_THRESHOLD) {
-      motors.backward(speedY);  // Move backward
-      Serial.println("Moving backward");
-  } else if (xDeviation > JOYSTICK_THRESHOLD) {
-      motors.turnRight(speedX);  // Turn right
-      Serial.println("Turning right");
-  } else if (xDeviation < -JOYSTICK_THRESHOLD) {
-      motors.turnLeft(speedX);  // Turn left
-      Serial.println("Turning left");
-  } else {
-      motors.stop();  // Joystick is in the dead zone, stop motors
-      Serial.println("Stopping");
-  }
+//   // Calculate the deviation from the center
+//   int xDeviation = xValue - JOYSTICK_THRESHOLD;
+//   int yDeviation = yValue - JOYSTICK_THRESHOLD;
 
-  delay(100);  // Small delay to smooth movement
+//   // Apply dead zone
+//   // int speedX = (abs(xDeviation) > JOYSTICK_THRESHOLD) ? map(abs(xDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
+//   // int speedY = (abs(yDeviation) > JOYSTICK_THRESHOLD) ? map(abs(yDeviation), 0, JOYSTICK_MAX_VALUE - JOYSTICK_CENTER, 0, MOTOR_MAX_SPEED) : 0;
+
+
+
+// // Determine motor direction and speed
+// if (yDeviation > JOYSTICK_CENTER) {
+//     if (xDeviation > JOYSTICK_CENTER) {
+//         motors.turnSmoothRight();  // Move forward and right
+//         Serial.println("Moving forward and turning right");
+//     } else if (xDeviation < JOYSTICK_CENTER) {
+//         motors.turnSmoothLeft();  // Move forward and left
+//         Serial.println("Moving forward and turning left");
+//     } else {
+//         motors.forward();  // Move straight forward
+//         Serial.println("Moving forward");
+//     }
+// } 
+// else if (yDeviation < JOYSTICK_CENTER) {
+//     if (xDeviation > JOYSTICK_CENTER) {
+//         motors.backwardSmoothRight();  // Move backward and right
+//         Serial.println("Moving backward and turning right");
+//     } else if (xDeviation < JOYSTICK_CENTER) {
+//         motors.backwardSmoothLeft();  // Move backward and left
+//         Serial.println("Moving backward and turning left");
+//     } else {
+//         motors.backward();  // Move straight backward
+//         Serial.println("Moving backward");
+//     }
+// } 
+// else if (xDeviation > JOYSTICK_CENTER) {
+//     motors.turnRight();  // Turn right only
+//     Serial.println("Turning right");
+// } 
+// else if (xDeviation < JOYSTICK_CENTER) {
+//     motors.turnLeft();  // Turn left only
+//     Serial.println("Turning left");
+// } 
+// else {
+//     motors.stop();  // Joystick is in the center, stop motors
+//     Serial.println("Stopping");
+// }
+
+// delay(100);  // Small delay to smooth movement
 
   // Serial.println("Made it into the loop");
 
