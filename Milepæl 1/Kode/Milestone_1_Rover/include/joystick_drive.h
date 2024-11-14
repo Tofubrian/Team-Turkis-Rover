@@ -29,18 +29,18 @@ MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 // ************************* JOYSTICK DRIVE MODE ************************* //
 
 void manualMode() {
-    int leftXValue = analogRead(ManualpinX); // Read X-axis value  
-    int leftYValue = analogRead(ManualpinY); // Read X-axis value  
+    int joyPinX = analogRead(ManualpinX); // Read X-axis value  
+    int joyPinY = analogRead(ManualpinY); // Read X-axis value  
 
-    if (ManualpinY > joystick_center + joystick_threshold) {
+    if (joyPinY > joystick_center + joystick_threshold) {
         motors.forward();
         Serial.println("Going forward");
     }
-    else if (ManualpinY > joystick_center + joystick_threshold && ManualpinX > joystick_center + joystick_threshold) {
+    else if (joyPinY > joystick_center + joystick_threshold && joyPinX > joystick_center + joystick_threshold) {
         motors.turnSmoothLeft();
         Serial.println("Turning forward left");
     }
-    else if (ManualpinY > joystick_center + joystick_threshold && ManualpinX > joystick_center - joystick_threshold) {
+    else if (joyPinY > joystick_center + joystick_threshold && joyPinX > joystick_center - joystick_threshold) {
         motors.turnSmoothRight();
         Serial.println("Turning forward right");
     }
@@ -52,15 +52,15 @@ void manualMode() {
     // Delay here for smooth movements with the joystick
     delay(100);
 
-    if (ManualpinY < joystick_center - joystick_threshold) {
+    if (joyPinY < joystick_center - joystick_threshold) {
         motors.backward();
         Serial.println("Going backward");
     }
-    else if (ManualpinY < joystick_center - joystick_threshold && ManualpinX > joystick_center + joystick_threshold){
+    else if (joyPinY < joystick_center - joystick_threshold && joyPinX > joystick_center + joystick_threshold){
         motors.backwardSmoothLeft();
         Serial.println("Backwards left");
     }
-    else if (ManualpinY < joystick_center - joystick_threshold && ManualpinX < joystick_center - joystick_threshold) {
+    else if (joyPinY < joystick_center - joystick_threshold && joyPinX < joystick_center - joystick_threshold) {
         motors.backwardSmoothRight();
         Serial.println("Backwards right");
     }

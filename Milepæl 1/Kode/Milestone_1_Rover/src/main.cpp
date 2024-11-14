@@ -105,17 +105,11 @@
 
 // ------------------------------------------------------------------------------------------------
 
-
-
-
-
-
 // // Alt fungerende kode herunder
 
 int incomingByte = 0; // for incoming serial data
 
-
-// MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
+// MotorController autoMotors(25, 26, 14, 12);  // A1, A2, B1, B2
 
 // Pins for XSHUT
 #define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
