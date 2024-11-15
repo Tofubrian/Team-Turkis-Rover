@@ -30,7 +30,16 @@ MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
 void manualMode() {
     int joyPinX = analogRead(ManualpinX); // Read X-axis value  
-    int joyPinY = analogRead(ManualpinY); // Read X-axis value  
+    int joyPinY = analogRead(ManualpinY); // Read X-axis value
+
+    int joyPinX = inputX / 4;
+    int joyPinY = inputY / 4;
+
+    Serial.println("X value is ");
+    Serial.println(joyPinX);
+
+    Serial.println("Y value is ");
+    Serial.println(joyPinY);
 
     if (joyPinY > joystick_center + joystick_threshold) { // Forward
         if (joyPinX > joystick_center + joystick_threshold) {
