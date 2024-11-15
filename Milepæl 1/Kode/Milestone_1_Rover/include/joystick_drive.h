@@ -29,17 +29,8 @@ MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 // ************************* JOYSTICK DRIVE MODE ************************* //
 
 void manualMode() {
-    int inputX = analogRead(ManualpinX); // Read X-axis value  
-    int inputY = analogRead(ManualpinY); // Read X-axis value  
-
-    int joyPinX = inputX / 4;
-    int joyPinY = inputY / 4;
-
-    Serial.println("X value is ");
-    Serial.println(joyPinX);
-
-    Serial.println("Y value is ");
-    Serial.println(joyPinY);
+    int joyPinX = analogRead(ManualpinX); // Read X-axis value  
+    int joyPinY = analogRead(ManualpinY); // Read X-axis value  
 
     if (joyPinY > joystick_center + joystick_threshold) { // Forward
         if (joyPinX > joystick_center + joystick_threshold) {
@@ -81,7 +72,7 @@ void manualMode() {
         motors.stop();
         Serial.println("Idle mode");
     }
-
+    
     // Delay here for smooth movements with the joystick
     delay(100);
 
