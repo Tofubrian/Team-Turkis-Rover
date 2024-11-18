@@ -29,8 +29,8 @@ MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 // ************************* JOYSTICK DRIVE MODE ************************* //
 
 void manualMode() {
-    int joyPinX = analogRead(ManualpinX); // Read X-axis value  
-    int joyPinY = analogRead(ManualpinY); // Read X-axis value
+    int inputX = analogRead(ManualpinX); // Read X-axis value  
+    int inputY = analogRead(ManualpinY); // Read X-axis value
 
     int joyPinX = inputX / 4;
     int joyPinY = inputY / 4;
