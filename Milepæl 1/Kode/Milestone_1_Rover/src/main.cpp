@@ -14,7 +14,7 @@
   // Servo servoRight;
   // Servo servoLeft;
 
-  // RoverArm servoMotors(17, 18, 5, 16); // Grab, Bunden, Højre, Venstre
+  // RoverArm servoMotors(17, 18, 5, 16); // Grab, Bunden, Højre, Venstre 
 
   // void setup() 
   // {

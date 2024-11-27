@@ -43,11 +43,11 @@ void manualMode() {
 
     if (joyPinY > joystick_center + joystick_threshold) { // Forward
         if (joyPinX > joystick_center + joystick_threshold) {
-            motors.turnSmoothLeft(); // Forward Left
+            motors.turnLeft(); // Forward Left
             Serial.println("Turning forward left");
         }
         else if (joyPinX < joystick_center - joystick_threshold) {
-            motors.turnSmoothRight(); // Forward Right
+            motors.turnRight(); // Forward Right
             Serial.println("Turning forward right");
         }
         else {
@@ -57,11 +57,11 @@ void manualMode() {
     }
     else if (joyPinY < joystick_center - joystick_threshold) { // Backward
         if (joyPinX > joystick_center + joystick_threshold) {
-            motors.backwardSmoothLeft(); // Backward Left
+            motors.turnLeft(); // Backward Left
             Serial.println("Backwards left");
         }
         else if (joyPinX < joystick_center - joystick_threshold) {
-            motors.backwardSmoothRight(); // Backward Right
+            motors.turnRight(); // Backward Right
             Serial.println("Backwards right");
         }
         else {
