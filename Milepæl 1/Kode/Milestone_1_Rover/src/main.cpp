@@ -148,6 +148,8 @@ void setup() {
 
   Wire.begin(); // Begin I2C communication
 
+  receiveESP32();
+
   // *********************** SENSOR CONFIG START ************************ //
 
   // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront

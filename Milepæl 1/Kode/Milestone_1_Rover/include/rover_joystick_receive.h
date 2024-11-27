@@ -31,7 +31,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.println();
 }
 
-void setup() {
+void receiveESP32() {
   Serial.begin(9600);
 
   // Set device as a Wi-Fi Station
@@ -48,5 +48,3 @@ void setup() {
   esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
 }
 
-void loop() {
-}
