@@ -8,30 +8,34 @@
 
 int valueX = 0; // to store the X-axis value
 int valueY = 0; // to store the Y-axis value
+extern bool buttonPressed = false; 
 
 // Structure  to receive valueX and valueY
 // Must match the sender structure
 typedef struct struct_message {
   int positionX;
   int positionY;
+  bool toggleState;
 } struct_message;
 
 // Create a struct_message called myJoystick
 struct_message myJoystick;
 
 // Callback function that will be executed when data is received
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  memcpy(&myJoystick, incomingData, sizeof(myJoystick));
-  Serial.print("Bytes received: ");
-  Serial.println(len);
-  Serial.print("X position: ");
-  Serial.println(myJoystick.positionX);
-  Serial.print("Y position: ");
-  Serial.println(myJoystick.positionY);
-  Serial.println();
+void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
+    memcpy(&myJoystick, incomingData, sizeof(myJoystick));
+
+    Serial.print("Bytes received: ");
+    Serial.println(len);
+    Serial.print("X position: ");
+    Serial.println(myJoystick.positionX);
+    Serial.print("Y position: ");
+    Serial.println(myJoystick.positionY);
+    Serial.print("Toggle state: ");
+    Serial.println(myJoystick.toggleState ? "Pressed" : "Released");
 }
 
-void receiveESP32() {
+void receiverESP32() {
   Serial.begin(115200);
 
   // Set device as a Wi-Fi Station

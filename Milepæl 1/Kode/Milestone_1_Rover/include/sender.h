@@ -6,24 +6,27 @@
 // #include <esp_now.h>
 // #include <WiFi.h>
 
-// #define VRX_PIN  36 // ESP32 pin 4 GPIO39 (ADC3) connected to VRX pin
-// #define VRY_PIN  39 // ESP32 pin 3 GPIO36 (ADC0) connected to VRY pin 
+// #define VRX_PIN  39 // ESP32 pin 4 GPIO39 (ADC3) connected to VRX pin
+// #define VRY_PIN  36 // ESP32 pin 3 GPIO36 (ADC0) connected to VRY pin
+// #define joystickClick 33 // Joystick pin for clicking
 
 // int valueX = 0; // to store the X-axis value
 // int valueY = 0; // to store the Y-axis value
+// extern bool buttonPressed = false;
 
 // // Structure  to send valueX and valueY
 // // Must match the receiver structure
 // typedef struct struct_message {
 //   int positionX;
 //   int positionY;
+//   bool toggleState;
 // } struct_message;
 
 // // Create a struct_message called myJoystick
 // struct_message myJoystick;
 
 // // Set the receiver ESP32 board address in a array of unsigned 8 bit integers.
-// uint8_t myBoardAddress[] = {0xD0, 0xEF, 0x76, 0xF0, 0x1D, 0xE8};
+// uint8_t myBoardAddress[] = {0xD0, 0xEF, 0x76, 0xEE, 0xED, 0x24};
 
 // esp_now_peer_info_t peerInfo;
 
@@ -44,10 +47,10 @@
 //   analogSetAttenuation(ADC_11db);
 
 //   // Init Serial Monitor
-//   Serial.begin(9600);
+//   Serial.begin(115200);
 
 //   // initialize digital pin GPIO 18 as an output.
-//   pinMode(18, OUTPUT);
+//   pinMode(joystickClick, INPUT_PULLUP);
 
 //   // Set device in Wi-Fi Station mode for ESP-NOW to function on WIFI.
 //   // ESP-NOW does not require connection to an AP to function.
@@ -76,11 +79,14 @@
 //   // Read X and Y analog values on ADC's
 //   valueX = analogRead(VRX_PIN);
 //   valueY = analogRead(VRY_PIN);
+//   buttonPressed = digitalRead(joystickClick);
+
 
 //   // Fill X and Y analog values on ADC's 
 //   // i.e. joystick positions into the myJoystick data structure
 //    myJoystick.positionX = valueX;
 //    myJoystick.positionY = valueY;
+//    myJoystick.toggleState = joystickClick;
 
 //   // Print data to Serial Monitor on VSC
 //   Serial.print("x = ");
@@ -105,5 +111,5 @@
 //   delay(50);
 //   digitalWrite(18, LOW);  // Turn GPIO 18 i.e. LED off
 //   Serial.println("---------------------------------------------------------------");
-//   delay(1000);
+//   delay(0);
 // }

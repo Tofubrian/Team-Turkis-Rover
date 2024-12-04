@@ -147,8 +147,14 @@ void setup() {
   ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
 
   Wire.begin(); // Begin I2C communication
-
+  
+  // Modtager modul for ESP32
   receiveESP32();
+
+  // Buzzer setup import
+  buzzerSetup();
+
+
 
   // *********************** SENSOR CONFIG START ************************ //
 
@@ -205,63 +211,16 @@ void loop() {
   Serial.println("Starting the rover with maunal drive mode");
   manualMode();
 
+  // Serial.println("Starting the automatic drive mode");
+  // automaticDriveMode();
+
+  
+
   // ************************ END MANUAL DRIVE MODE ************************ //
 
   // ------------------------------------------------------------------------------------------------
 
-  // ************************ AUTOMATIC DRIVE MODE ************************ //
 
-  // int distanceLeft = sensorLeft.readRangeSingleMillimeters();
-  // int distanceRight = sensorRight.readRangeSingleMillimeters();
-  // int distanceFront = sensorFront.readRangeSingleMillimeters();
-
-  // Serial.print("Left Distance: ");
-  // Serial.print(distanceLeft);
-  // Serial.print(" Right Distance: ");
-  // Serial.println(distanceRight);
-  // Serial.print(" Front Distance: ");
-  // Serial.println(distanceFront);
-
-  //   if (distanceFront <= 220) {
-  //       ledcWrite(PWM_CHANNEL, 500);
-  //       motors.forwardSaveRight();
-  //       ledcWrite(PWM_CHANNEL, 0);
-  //   }
-  //   else if (distanceFront <= 200 && distanceRight <= 200) {
-  //       motors.forwardSaveLeft();
-  //   }
-  //   else if (distanceFront <= 200 && distanceLeft <= 200) {
-  //       motors.forwardSaveRight();
-  //   }
-  //   else if (distanceLeft <= 200 && distanceRight <= 200) {
-  //       motors.forwardSaveRight();
-  //       delay(100);
-  //   }
-  //   else if (distanceLeft <= 200) {
-  //       motors.turnRight();
-  //       delay(100);
-  //   } 
-  //   else if (distanceRight <= 200) {
-  //       motors.turnLeft();
-  //       delay(100);
-  //   } 
-  //   else {
-  //       motors.forward();
-  //   }
-
-  // // Timeout handling for both sensors
-  // if (sensorLeft.timeoutOccurred()) { 
-  //   Serial.println(" TIMEOUT on Left Sensor");
-  // }
-  // if (sensorRight.timeoutOccurred()) { 
-  //   Serial.println(" TIMEOUT on Right Sensor");
-  // }
-
-  // if (sensorFront.timeoutOccurred()) { 
-  //   Serial.println(" TIMEOUT on Front Sensor");
-  // }
-
-  // ************************ END AUTOMATIC DRIVE MODE ************************ //
 
   // ------------------------------------------------------------------------------------------------
 };
