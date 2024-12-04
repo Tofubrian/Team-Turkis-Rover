@@ -1,8 +1,6 @@
 #include <Arduino.h>
-#include "MotorStyring_CLASSES.h"
-// #include "rover_joystick_receive.h"
-// #include <receiver.h>
-
+#include "MotorStyring_Classes.h"
+#include "receiver.h"
 
 
 // ************************* START JOYSTICK ************************* //
