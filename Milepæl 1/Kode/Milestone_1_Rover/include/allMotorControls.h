@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "MotorStyring_CLASSES.h"
 // #include "rover_joystick_receive.h"
-#include <receiver.h>
+// #include <receiver.h>
 
 
 
