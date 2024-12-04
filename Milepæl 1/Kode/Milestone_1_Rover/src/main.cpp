@@ -1,115 +1,21 @@
+// *********************** INCLUDE OF ALL LIBRARIES NEEDED ************************ //
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring_CLASSES.h>
 #include <ESP32Servo.h>
-#include <servoarm.h>
-#include <joystick_drive.h>
+#include <robotArm.h>
+#include <allMotorControls.h>
 
-  // ************************ START SERVO ARM ************************ //
-
-  // Definer pins osv for rover arm her
-  // Servo servoGrab;
-  // Servo servoBottom;
-  // Servo servoRight;
-  // Servo servoLeft;
-
-  // RoverArm servoMotors(17, 18, 5, 16); // Grab, Bunden, Højre, Venstre
-
-  // void setup() 
-  // {
-  //   ESP32PWM::allocateTimer(0);
-  //   ESP32PWM::allocateTimer(1);
-  //   ESP32PWM::allocateTimer(2);
-  //   ESP32PWM::allocateTimer(3);
-
-  //   // servoGrab.setPeriodHertz(50);    
-  //   // servoGrab.attach(17, 500, 2500);
-
-  //   // servoBottom.setPeriodHertz(50);    
-  //   // servoBottom.attach(18, 500, 2500);
-    
-  //   // servoRight.setPeriodHertz(50);    
-  //   // servoRight.attach(5, 500, 2500);
-    
-  //   // servoLeft.setPeriodHertz(50);    
-  //   // servoLeft.attach(16, 500, 2500);
-
-  // }
-
- // ---------------------------------- LOOP CODE FOR SERVO ARM -------------------------------------------
-
-  // void loop() 
-// {
-  // Grab servo   
-  // for(int i = 180; i > 0; i-=3) 
-  // {
-  //   servoGrab.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-  // for(int i = 0; i < 180; i+=3) 
-  // {
-  //   servoGrab.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-
-  // // Bottom servo   
-  // for(int i = 180; i > 0; i-=3) 
-  // {
-  //   servoBottom.write(i);
-  //   servoGrab.write(i);
-  //   delay(10);
-  //   servoGrab.write(i);
-  // }
-  // delay(225);
-  // for(int i = 0; i < 180; i+=3) 
-  // {
-  //   servoBottom.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-
-  //   // Right servo   
-  // for(int i = 180; i > 0; i-=3) 
-  // {
-  //   servoRight.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-  // for(int i = 0; i < 180; i+=3) 
-  // {
-  //   servoRight.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-
-  //     // Left servo   
-  // for(int i = 180; i > 0; i-=3) 
-  // {
-  //   servoLeft.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-  // for(int i = 0; i < 180; i+=3) 
-  // {
-  //   servoLeft.write(i);
-  //   delay(10);
-  // }
-  // delay(225);
-// }
-
-
-// ************************ END SERVO ARM ************************ //
-
+// *********************** END INCLUDE LIBRARIES ************************ //
 // ------------------------------------------------------------------------------------------------
 
 // // Alt fungerende kode herunder
 
-int incomingByte = 0; // for incoming serial data
-
 // MotorController autoMotors(25, 26, 14, 12);  // A1, A2, B1, B2
+// Pin defintion moved to allMotorControls.h
+
 
 // Pins for XSHUT
 #define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
@@ -120,8 +26,12 @@ VL53L0X sensorRight;
 VL53L0X sensorLeft;
 VL53L0X sensorFront;
 
-// // Pin for buzzer module
-// #define buzzerPin 33    // Buzzer sensor
+// Easy way to change pin definitions without leaving main file
+// Pin defintion for buzzer and LED for backlight
+int buzzerPin = 5;
+int redLEDPin = 27;
+// ---------------------------------------------------------------------------------------------------------------
+
 
 const int PWM_CHANNEL = 0;    // ESP32 has 16 channels which can generate 16 independent waveforms
 const int PWM_FREQ = 500;     // Recall that Arduino Uno is ~490 Hz. Official ESP32 example uses 5,000Hz
@@ -135,12 +45,14 @@ const int LED_OUTPUT_PIN = 33;
 const int DELAY_MS = 0;  // delay between fade increments
 
 
+
+
 void setup() {
 
   // Setting serial monitor port
   Serial.begin(115200);
 
-// ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
+  // ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
   ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
 
   // ledcAttachPin(uint8_t pin, uint8_t channel);
@@ -149,10 +61,29 @@ void setup() {
   Wire.begin(); // Begin I2C communication
   
   // Modtager modul for ESP32
-  receiveESP32();
+  receiverESP32();
 
   // Buzzer setup import
   buzzerSetup();
+
+  // Robot arm setup section included
+  robotArmSetup();
+
+  // *********************** DEFINITION OF THREADING TASKS ************************ //
+
+  // ESP32 sender thread might be smart, around 20 in vTaskDelay
+
+  xTaskCreatePinnedToCore(
+      moveServos,
+      "Move Servos",
+      10000,
+      NULL,
+      1,
+      &moveServosTaskHandle,
+      0
+  );
+
+  // *********************** END OF DEFINTION OF THREADING TASKS ************************ //
 
 
 
@@ -200,7 +131,6 @@ void setup() {
   sensorFront.startContinuous();
 
   // *********************** SENSOR CONFIG END ************************ //
-
   // -----------------------------------------------------------------------------------------------
 }
 

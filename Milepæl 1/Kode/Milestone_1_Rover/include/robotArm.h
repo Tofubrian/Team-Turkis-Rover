@@ -110,13 +110,13 @@ void moveServos(void* pvParameters) {
         }
 
         // Delay to maintain task frequency
-        vTaskDelay(20 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
 
 
 
-void setup() {
+void robotArmSetup() {
     Serial.begin(115200);
     
     // Attach servos
@@ -137,15 +137,15 @@ void setup() {
     pinMode(buttonPressed, INPUT_PULLUP); // Use internal pull-up resistor
 
     // Create task for servo movement
-    xTaskCreatePinnedToCore(
-        moveServos,
-        "Move Servos",
-        10000,
-        NULL,
-        1,
-        &moveServosTaskHandle,
-        0
-    );
+    // xTaskCreatePinnedToCore(
+    //     moveServos,
+    //     "Move Servos",
+    //     10000,
+    //     NULL,
+    //     1,
+    //     &moveServosTaskHandle,
+    //     0
+    // );
     // xTaskCreate(
     //     moveServos,
     //     "Move Servos",
@@ -156,7 +156,7 @@ void setup() {
     // );
 }
 
-void loop() {
+void emptyLoop() {
   // The main loop can be used for other tasks or remain empty
 }
 
