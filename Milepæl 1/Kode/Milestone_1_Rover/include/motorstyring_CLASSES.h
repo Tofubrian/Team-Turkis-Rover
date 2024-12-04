@@ -1,6 +1,6 @@
 
-#ifndef MOTORSTYRING_CLASSES_H
-#define MOTORSTYRING_CLASSES_H
+#ifndef Motorstyring_CLASSES_H
+#define Motorstyring_CLASSES_H
 
 #include <Arduino.h>
 #include <Wire.h>

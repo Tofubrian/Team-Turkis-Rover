@@ -1,13 +1,11 @@
 #include <Arduino.h>
-#include "MotorStyring_Classes.h"
-#include "rover_joystick_receive.h"
+#include "MotorStyring_CLASSES.h"
+// #include "rover_joystick_receive.h"
+#include <receiver.h>
+
 
 
 // ************************* START JOYSTICK ************************* //
-
-// Joystick definition and variables here
-// const int ManualpinX = 35;  // Joystick X-axis pin
-// const int ManualpinY = 34;  // Joystick Y-axis pin
 
 // ******* LOCKED VALUES FOR JOYSTICK ******* // 
 const int joystick_center = 1870; // Center of the joystick // 2048
@@ -25,7 +23,7 @@ MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
 // ************************* END MOTOR PIN DEFINITION ******************************* //
 
-// ------------------------------------------------------------------------------------------------
+
 
 // ************************* JOYSTICK DRIVE MODE ************************* //
 
@@ -33,8 +31,8 @@ void manualMode() {
     // int inputX = analogRead(ManualpinX); // Read X-axis value  
     // int inputY = analogRead(ManualpinY); // Read X-axis value
 
-    int joyPinX = myJoystick.positionX;
-    int joyPinY = myJoystick.positionY;
+    int joyPinX = myJoystick.positionXmotor;
+    int joyPinY = myJoystick.positionYmotor;
 
 
     Serial.println("X value is ");
