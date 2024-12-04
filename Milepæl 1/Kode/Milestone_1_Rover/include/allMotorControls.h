@@ -83,42 +83,8 @@ void manualMode() {
         motors.stop();
         Serial.println("Idle mode");
     }
-    
     // Delay here for smooth movements with the joystick
     delay(100);
-
-    // if (joyPinY > joystick_center + joystick_threshold) {
-    //     motors.forward();
-    //     Serial.println("Going forward");
-    // }
-    // else if (joyPinY > joystick_center + joystick_threshold && joyPinX > joystick_center + joystick_threshold) {
-    //     motors.turnSmoothLeft();
-    //     Serial.println("Turning forward left");
-    // }
-    // else if (joyPinY > joystick_center + joystick_threshold && joyPinX > joystick_center - joystick_threshold) {
-    //     motors.turnSmoothRight();
-    //     Serial.println("Turning forward right");
-    // }
-    // else if (joyPinY < joystick_center - joystick_threshold) {
-    //     motors.backward();
-    //     Serial.println("Going backward");
-    // }
-    // else if (joyPinY < joystick_center - joystick_threshold && joyPinX > joystick_center + joystick_threshold){
-    //     motors.backwardSmoothLeft();
-    //     Serial.println("Backwards left");
-    // }
-    // else if (joyPinY < joystick_center - joystick_threshold && joyPinX < joystick_center - joystick_threshold) {
-    //     motors.backwardSmoothRight();
-    //     Serial.println("Backwards right");
-    // }
-    // else {
-    //     motors.stop();
-    //     Serial.println("Idle mode");
-    // }
-
-    // // Delay here for smooth movements with the joystick
-    // delay(100);
 }
-
 // ************************* JOYSTICK END DRIVE MODE ************************* //
 

@@ -120,8 +120,8 @@ VL53L0X sensorRight;
 VL53L0X sensorLeft;
 VL53L0X sensorFront;
 
-// Pin for buzzer module
-#define buzzerPin 33    // Buzzer sensor
+// // Pin for buzzer module
+// #define buzzerPin 33    // Buzzer sensor
 
 const int PWM_CHANNEL = 0;    // ESP32 has 16 channels which can generate 16 independent waveforms
 const int PWM_FREQ = 500;     // Recall that Arduino Uno is ~490 Hz. Official ESP32 example uses 5,000Hz

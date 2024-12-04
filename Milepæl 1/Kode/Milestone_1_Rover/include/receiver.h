@@ -16,6 +16,9 @@ typedef struct struct_message {
   int positionX;
   int positionY;
   bool toggleState;
+  int positionXmotor;
+  int positionYmotor;
+  bool toggleDriveMode;
 } struct_message;
 
 // Create a struct_message called myJoystick
