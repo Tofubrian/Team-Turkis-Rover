@@ -6,13 +6,22 @@
 // #include <esp_now.h>
 // #include <WiFi.h>
 
-// #define VRX_PIN  39 // ESP32 pin 4 GPIO39 (ADC3) connected to VRX pin
-// #define VRY_PIN  36 // ESP32 pin 3 GPIO36 (ADC0) connected to VRY pin
-// #define joystickClick 33 // Joystick pin for clicking
+// #pragma once
+
+// #define VRX_PIN  36 // ESP32 pin Servo X
+// #define VRY_PIN  37 // ESP32 pin Servo Y
+// #define joystickClick 21 // Joystick pin for clicking motor
+// #define VRX_PIN_Motor 32 // ESP32 pin Servo X
+// #define VRY_PIN_Motor 39 // ESP32 pin Servo Y
+// #define joystickClick_Motor 38 // ESP32 pin joystick click changing axes
+
 
 // int valueX = 0; // to store the X-axis value
 // int valueY = 0; // to store the Y-axis value
 // extern bool buttonPressed = false;
+// int valueX_Motor = 0; // Store X-axis value for motor
+// int valueY_Motor = 0; // Store X-axis value for motor
+// extern bool buttonPressed_Motor = false; // Starting the bool for motor off
 
 // // Structure  to send valueX and valueY
 // // Must match the receiver structure
@@ -20,16 +29,16 @@
 //   int positionX;
 //   int positionY;
 //   bool toggleState;
-    // int positionXmotor;
-    // int positionYmotor;
-    // bool toggleDriveMode;
+//   int positionXmotor;
+//   int positionYmotor;
+//   bool toggleDriveMode;
 // } struct_message;
 
 // // Create a struct_message called myJoystick
 // struct_message myJoystick;
 
 // // Set the receiver ESP32 board address in a array of unsigned 8 bit integers.
-// uint8_t myBoardAddress[] = {0xD0, 0xEF, 0x76, 0xEE, 0xED, 0x24};
+// uint8_t myBoardAddress[] = {0xd0, 0xef, 0x76, 0xf0, 0x01, 0x6c};
 
 // esp_now_peer_info_t peerInfo;
 
@@ -54,6 +63,7 @@
 
 //   // initialize digital pin GPIO 18 as an output.
 //   pinMode(joystickClick, INPUT_PULLUP);
+//   pinMode(joystickClick_Motor, INPUT_PULLUP);
 
 //   // Set device in Wi-Fi Station mode for ESP-NOW to function on WIFI.
 //   // ESP-NOW does not require connection to an AP to function.
@@ -83,6 +93,9 @@
 //   valueX = analogRead(VRX_PIN);
 //   valueY = analogRead(VRY_PIN);
 //   buttonPressed = digitalRead(joystickClick);
+//   valueX_Motor = analogRead(VRX_PIN_Motor);
+//   valueY_Motor = analogRead(VRY_PIN_Motor);
+//   buttonPressed_Motor = digitalRead(joystickClick_Motor);
 
 
 //   // Fill X and Y analog values on ADC's 
@@ -90,12 +103,24 @@
 //    myJoystick.positionX = valueX;
 //    myJoystick.positionY = valueY;
 //    myJoystick.toggleState = joystickClick;
+//    myJoystick.positionXmotor = valueX_Motor;
+//    myJoystick.positionYmotor = valueY_Motor;
+//    myJoystick.toggleDriveMode = joystickClick_Motor;
 
 //   // Print data to Serial Monitor on VSC
 //   Serial.print("x = ");
 //   Serial.println(myJoystick.positionX);
+//   delay(500);
 //   Serial.print("y = ");
 //   Serial.println(myJoystick.positionY);
+//   delay(500);
+//   Serial.print("x motor = ");
+//   Serial.println(myJoystick.positionXmotor);
+//   delay(500);
+//   Serial.print("y motor = ");
+//   Serial.println(myJoystick.positionYmotor);
+//   delay(500);
+
 
 //   // Send the myJoystick structure via ESP-NOW
 //   esp_err_t result = esp_now_send(myBoardAddress, (uint8_t *) &myJoystick, sizeof(myJoystick));
@@ -111,8 +136,8 @@
 //   else {
 //     Serial.println("Error emitting data");
 //   }
-//   delay(50);
-//   digitalWrite(18, LOW);  // Turn GPIO 18 i.e. LED off
-//   Serial.println("---------------------------------------------------------------");
-//   delay(0);
+//   // delay(50);
+//   // digitalWrite(18, LOW);  // Turn GPIO 18 i.e. LED off
+//   // Serial.println("---------------------------------------------------------------");
+//   // delay(0);
 // }

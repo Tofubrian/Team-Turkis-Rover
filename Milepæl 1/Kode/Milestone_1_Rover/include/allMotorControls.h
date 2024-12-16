@@ -242,10 +242,12 @@ void driveToggle(void* pvParameters) {
         if (toggleDrive) 
         {
             automaticDriveMode();
+            Serial.println("GOING AUTOMATIC");
         }
         else 
         {
             manualMode();
+            Serial.println("MANUAL");
         }
     }
 }

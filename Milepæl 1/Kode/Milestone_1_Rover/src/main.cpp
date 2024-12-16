@@ -17,9 +17,7 @@
 // Pin defintion moved to allMotorControls.h
 
 
-
-
-// Easy way to change pin definitions without leaving main file
+// Easy way to change pin definitions without leaving main file - not connected
 // Pin defintion for buzzer and LED for backlight
 // int buzzerPin = 5;
 // int redLEDPin = 27;
@@ -30,7 +28,7 @@ QueueHandle_t myQueue;  // Declare the queue handle
 
 
 void setup() {
-// Setting serial monitor port
+// Setting serial monitor speed for debug
   Serial.begin(115200);
   
   sensorSetup();
@@ -38,14 +36,14 @@ void setup() {
   // Modtager modul for ESP32
   receiverESP32();
 
-//   // Buzzer setup import
+//   // Buzzer setup import - NOT ATTACHED ON ROVERS YET, commented out
 //   buzzerSetup();
 
   // Robot arm setup section included
   robotArmSetup();
 
   // Queue created here, but maybe item size needs to adjusted. idk
-  myQueue = xQueueCreate(10, sizeof(int))
+  myQueue = xQueueCreate(10, sizeof(int));
 
   // Check the queue for successful creation
   if (myQueue == NULL) {
@@ -87,33 +85,11 @@ void setup() {
 
   // *********************** END OF DEFINTION OF THREADING TASKS ************************ //
 
-
-
-  // *********************** SENSOR CONFIG START ************************ //
-
   
   // -----------------------------------------------------------------------------------------------
 }
 
 void loop() {
-
-  // ****** TEST OF MANUAL DRIVE MODE ****** //
-
-  // Serial.println("Starting the rover with maunal drive mode");
-  // manualMode();
-//   automaticDriveMode();
-
-  // Serial.println("Starting the automatic drive mode");
-  // automaticDriveMode();
-
-  
-
-  // ************************ END MANUAL DRIVE MODE ************************ //
-
-  // ------------------------------------------------------------------------------------------------
-
-
-
   // ------------------------------------------------------------------------------------------------
 };
 
