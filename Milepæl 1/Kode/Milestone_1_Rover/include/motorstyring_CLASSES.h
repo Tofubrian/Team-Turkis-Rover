@@ -63,7 +63,7 @@ public:
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
         ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
         Serial.println("Moving back");
-        buzzerActive();
+        // buzzerActive();
     }
 
     void stop() {

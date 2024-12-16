@@ -11,6 +11,9 @@
 int valueX = 0; // to store the X-axis value
 int valueY = 0; // to store the Y-axis value
 extern bool buttonPressed = false; 
+int valueX_Motor = 0; // Store X-axis value for motor
+int valueY_Motor = 0; // Store X-axis value for motor
+extern bool buttonPressed_Motor = false; // Starting the bool for motor off
 
 // Structure  to receive valueX and valueY
 // Must match the sender structure
@@ -18,9 +21,9 @@ typedef struct struct_message {
   int positionX;
   int positionY;
   bool toggleState;
-  // int positionXmotor;
-  // int positionYmotor;
-  // bool toggleDriveMode;
+  int positionXmotor;
+  int positionYmotor;
+  bool toggleDriveMode;
 } struct_message;
 
 // Create a struct_message called myJoystick
@@ -38,6 +41,7 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
     Serial.println(myJoystick.positionY);
     Serial.print("Toggle state: ");
     Serial.println(myJoystick.toggleState ? "Pressed" : "Released");
+    
 }
 
 void receiverESP32() {
@@ -55,5 +59,9 @@ void receiverESP32() {
   // Once ESPNow is successfully Init, register Call Back CB function
   // OnDataRecv to read received packet info
   esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
+}
+
+void emptyLoopReceiver() {
+  
 }
 

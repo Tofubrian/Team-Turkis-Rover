@@ -9,10 +9,10 @@ Servo joint2Servo;
 Servo grabServo;
 
 // Servo pin definitions
-const int baseServoPin = 14;
-const int joint1ServoPin = 27;
-const int joint2ServoPin = 26;
-const int grabServoPin = 25;
+const int baseServoPin = 23;
+const int joint1ServoPin = 32;
+const int joint2ServoPin = 33;
+const int grabServoPin = 19;
 
 // Variable to store positions of servos
 int currentBasePosition = 120;
@@ -34,7 +34,7 @@ const int GRAB_MAX_ANGLE = 160;
 const int SERVO_STEP_SIZE = 2;  // Increment/decrement step size for movement
 
 // Joystick dead zone
-const int JOYSTICK_CENTER_MIN = 1900;
+const int JOYSTICK_CENTER_MIN = 1600;
 const int JOYSTICK_CENTER_MAX = 2100;
 
 // Variables
@@ -53,6 +53,7 @@ void moveServos(void* pvParameters) {
 
         // Read and handle toggle state
         int clickValue = myJoystick.toggleState;
+
         if (clickValue == LOW && lastClickState == HIGH) {
             toggleServos = !toggleServos; // Toggle servo group
         }
@@ -60,7 +61,9 @@ void moveServos(void* pvParameters) {
 
         // Debugging: Print joystick and toggle information
         Serial.print("Joystick X: "); Serial.println(xValue);
+        // delay(750);
         Serial.print("Joystick Y: "); Serial.println(yValue);
+        // delay(750);
         Serial.print("ToggleServos: "); Serial.println(toggleServos);
 
         if (toggleServos) {
