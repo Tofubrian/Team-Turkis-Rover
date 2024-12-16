@@ -48,6 +48,7 @@ void moveServos(void* pvParameters) {
     while (true) {
         // Read joystick values
         int xValue = myJoystick.positionX;
+        
         int yValue = myJoystick.positionY;
 
         // Read and handle toggle state

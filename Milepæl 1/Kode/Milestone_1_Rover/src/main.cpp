@@ -44,7 +44,63 @@ const int LED_OUTPUT_PIN = 33;
 
 const int DELAY_MS = 0;  // delay between fade increments
 
+void automaticDriveMode() {
 
+    // Automatic drive mode function
+    //  ************************ AUTOMATIC DRIVE MODE ************************ //
+
+    int distanceLeft = sensorLeft.readRangeSingleMillimeters();
+    int distanceRight = sensorRight.readRangeSingleMillimeters();
+    int distanceFront = sensorFront.readRangeSingleMillimeters();
+
+    Serial.print("Left Distance: ");
+    Serial.print(distanceLeft);
+    Serial.print(" Right Distance: ");
+    Serial.println(distanceRight);
+    Serial.print(" Front Distance: ");
+    Serial.println(distanceFront);
+
+    if (distanceFront <= 220) {
+        ledcWrite(PWM_CHANNEL, 500);
+        motors.forwardSaveRight();
+        ledcWrite(PWM_CHANNEL, 0);
+    }
+    else if (distanceFront <= 200 && distanceRight <= 200) {
+        motors.forwardSaveLeft();
+    }
+    else if (distanceFront <= 200 && distanceLeft <= 200) {
+        motors.forwardSaveRight();
+    }
+    else if (distanceLeft <= 200 && distanceRight <= 200) {
+        motors.forwardSaveRight();
+        delay(100);
+    }
+    else if (distanceLeft <= 200) {
+        motors.turnRight();
+        delay(100);
+    } 
+    else if (distanceRight <= 200) {
+        motors.turnLeft();
+        delay(100);
+    } 
+    else {
+        motors.forward();
+    }
+
+    // Timeout handling for both sensors
+    if (sensorLeft.timeoutOccurred()) { 
+        Serial.println(" TIMEOUT on Left Sensor");
+    }
+    if (sensorRight.timeoutOccurred()) { 
+        Serial.println(" TIMEOUT on Right Sensor");
+    }
+
+    if (sensorFront.timeoutOccurred()) { 
+        Serial.println(" TIMEOUT on Front Sensor");
+    }
+
+    // ************************ END AUTOMATIC DRIVE MODE ************************ //
+}
 
 
 void setup() {
@@ -138,8 +194,9 @@ void loop() {
 
   // ****** TEST OF MANUAL DRIVE MODE ****** //
 
-  Serial.println("Starting the rover with maunal drive mode");
-  manualMode();
+  // Serial.println("Starting the rover with maunal drive mode");
+  // manualMode();
+  automaticDriveMode();
 
   // Serial.println("Starting the automatic drive mode");
   // automaticDriveMode();
