@@ -7,6 +7,7 @@
 #include <ESP32Servo.h>
 #include <robotArm.h>
 #include <allMotorControls.h>
+#include <receiver.h>
 
 // *********************** END INCLUDE LIBRARIES ************************ //
 // ------------------------------------------------------------------------------------------------
@@ -60,25 +61,25 @@ void setup() {
   // ESP32 sender thread might be smart, around 20 in vTaskDelay
 
   // Task for tmoving servos
-  xTaskCreatePinnedToCore(
-      moveServos,
-      "Move Servos",
-      10000,
-      NULL,
-      1,
-      &moveServosTaskHandle,
-      0
-  );
+  // xTaskCreatePinnedToCore(
+  //     moveServos,
+  //     "Move Servos",
+  //     10000,
+  //     NULL,
+  //     2,
+  //     &moveServosTaskHandle,
+  //     0
+  // );
 
   // Task for implementing driving modes
   xTaskCreatePinnedToCore(
     driveToggle,
-    "Switch dive modes",
+    "Switch drive modes",
     10000,
     NULL,
-    2,
+    1,
     &driveToggleTaskHandle,
-    1
+    0
   );
 
 
