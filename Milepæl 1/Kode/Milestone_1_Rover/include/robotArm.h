@@ -2,6 +2,7 @@
 #include <ESP32Servo.h>
 #include <receiver.h>
 
+// Pin defintion for servos on arm
 // Servo objects
 Servo baseServo;
 Servo joint1Servo;
@@ -14,7 +15,7 @@ const int joint1ServoPin = 32;
 const int joint2ServoPin = 33;
 const int grabServoPin = 19;
 
-// Variable to store positions of servos
+// Variable to store positions of servos, also sets starting positions for servos
 int currentBasePosition = 120;
 int currentJoint1Position = 120;
 int currentJoint2Position = 90;
@@ -42,18 +43,16 @@ bool toggleServos = false;  // Tracks which servos to control
 bool lastClickState = HIGH; // Debounce helper for joystick button
 
 // FreeRTOS task handle
-TaskHandle_t moveServosTaskHandle;
+extern TaskHandle_t moveServosTaskHandle;
 
 void moveServos(void* pvParameters) {
     while (true) {
         // Read joystick values
         int xValue = myJoystick.positionX;
-        
         int yValue = myJoystick.positionY;
 
         // Read and handle toggle state
         int clickValue = myJoystick.toggleState;
-
         if (clickValue == LOW && lastClickState == HIGH) {
             toggleServos = !toggleServos; // Toggle servo group
         }
@@ -61,9 +60,7 @@ void moveServos(void* pvParameters) {
 
         // Debugging: Print joystick and toggle information
         Serial.print("Joystick X: "); Serial.println(xValue);
-        // delay(750);
         Serial.print("Joystick Y: "); Serial.println(yValue);
-        // delay(750);
         Serial.print("ToggleServos: "); Serial.println(toggleServos);
 
         if (toggleServos) {
@@ -114,15 +111,11 @@ void moveServos(void* pvParameters) {
         }
 
         // Delay to maintain task frequency
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(20 / portTICK_PERIOD_MS);
     }
 }
 
-
-
 void robotArmSetup() {
-    Serial.begin(115200);
-    
     // Attach servos
     baseServo.attach(baseServoPin);
     joint1Servo.attach(joint1ServoPin);
@@ -134,33 +127,5 @@ void robotArmSetup() {
     joint1Servo.write(currentJoint1Position);
     joint2Servo.write(currentJoint2Position);
     grabServo.write(currentGrabPosition);
-
-    receiverESP32();
-
-    // Joystick button pin setup
-    pinMode(buttonPressed, INPUT_PULLUP); // Use internal pull-up resistor
-
-    // Create task for servo movement
-    // xTaskCreatePinnedToCore(
-    //     moveServos,
-    //     "Move Servos",
-    //     10000,
-    //     NULL,
-    //     1,
-    //     &moveServosTaskHandle,
-    //     0
-    // );
-    // xTaskCreate(
-    //     moveServos,
-    //     "Move Servos",
-    //     2048,
-    //     NULL,
-    //     1,
-    //     &moveServosTaskHandle
-    // );
-}
-
-void emptyLoop() {
-  // The main loop can be used for other tasks or remain empty
 }
 

@@ -1,36 +1,32 @@
 #include <Arduino.h>
-#include "MotorStyring_Classes.h"
-#include "receiver.h"
 #include <Wire.h>
 #include <VL53L0X.h>
+#include <motorstyring_CLASSES.h>
+#include <receiver.h>
 
-
-// ************************* START JOYSTICK ************************* //
-
-// ******* LOCKED VALUES FOR JOYSTICK ******* // 
-const int joystick_center = 1870; // Center of the joystick // 2048
-const int joystick_threshold = 100; // Dead zone threshold // 200
+// Joystick predefined values
+const int joystick_center = 1900; // Center of the joystick // 2048
+const int joystick_threshold = 300; // Dead zone threshold // 200
 const int joystick_max_value = 4095; // Maximum reading for x,y axis
 const int joystick_min_value = 462; // Minimum reading for x,y axis
 const int MOTOR_MAX_SPEED = 255; // Maximum motor speed
 
+MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
-// ************************* END JOYSTICK ******************************* //
+// int incomingByte = 0; // for incoming serial data
 
-// ************************* START MOTOR PIN DEFINITION ******************************* //
-
-MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2 
-
-// ************************* END MOTOR PIN DEFINITION ******************************* //
+// // MotorController autoMotors(25, 26, 14, 12);  // A1, A2, B1, B2
 
 // Pins for XSHUT
 #define XSHUT_RIGHT 16   // XSHUT pin for højre sensor
 #define XSHUT_LEFT 17    // XSHUT pin for venstre sensor
-#define XSHUT_FRONT 19    // XSHUT pin for front sensor
+#define XSHUT_FRONT 18    // XSHUT pin for front sensor
 
 VL53L0X sensorRight;
 VL53L0X sensorLeft;
 VL53L0X sensorFront;
+
+
 
 const int PWM_CHANNEL = 0;    // ESP32 has 16 channels which can generate 16 independent waveforms
 const int PWM_FREQ = 500;     // Recall that Arduino Uno is ~490 Hz. Official ESP32 example uses 5,000Hz
@@ -39,14 +35,27 @@ const int PWM_RESOLUTION = 8; // We'll use same resolution as Uno (8 bits, 0-255
 // The max duty cycle value based on PWM resolution (will be 255 if resolution is 8 bits)
 const int MAX_DUTY_CYCLE = (int)(pow(2, PWM_RESOLUTION) - 1); 
 
-// const int LED_OUTPUT_PIN = 33;
+const int LED_OUTPUT_PIN = 33;
 
 const int DELAY_MS = 0;  // delay between fade increments
 
-void sensorSetup() {
-    Wire.begin();
 
-    // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront
+void setupMotor() {
+
+  // Setting serial monitor port
+  Serial.begin(115200);
+
+// ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
+  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+
+  // ledcAttachPin(uint8_t pin, uint8_t channel);
+  ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
+
+  Wire.begin(); // Begin I2C communication
+
+  // *********************** SENSOR CONFIG START ************************ //
+
+  // Configure XSHUT pins for sensorLeft and sensorRight and sensorFront
   pinMode(XSHUT_LEFT, OUTPUT);
   pinMode(XSHUT_RIGHT, OUTPUT);
   pinMode(XSHUT_FRONT, OUTPUT);
@@ -66,8 +75,6 @@ void sensorSetup() {
   }
   sensorLeft.setAddress(0x31); // Set unique address for left sensor
   sensorLeft.startContinuous();
-  
-
 
   // Initialize the right sensor
   digitalWrite(XSHUT_RIGHT, HIGH);
@@ -91,25 +98,27 @@ void sensorSetup() {
 
   // *********************** SENSOR CONFIG END ************************ //
 
-    // ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
-  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+  // -----------------------------------------------------------------------------------------------
 }
+
+
 
 void automaticDriveMode() {
 
-    // Automatic drive mode function
-    //  ************************ AUTOMATIC DRIVE MODE ************************ //
+  // ------------------------------------------------------------------------------------------------
 
-    int distanceLeft = sensorLeft.readRangeSingleMillimeters();
-    int distanceRight = sensorRight.readRangeSingleMillimeters();
-    int distanceFront = sensorFront.readRangeSingleMillimeters();
+  // ************************ AUTOMATIC DRIVE MODE ************************ //
 
-    Serial.print("Left Distance: ");
-    Serial.print(distanceLeft);
-    Serial.print(" Right Distance: ");
-    Serial.println(distanceRight);
-    Serial.print(" Front Distance: ");
-    Serial.println(distanceFront);
+  int distanceLeft = sensorLeft.readRangeSingleMillimeters();
+  int distanceRight = sensorRight.readRangeSingleMillimeters();
+  int distanceFront = sensorFront.readRangeSingleMillimeters();
+
+  Serial.print("Left Distance: ");
+  Serial.print(distanceLeft);
+  Serial.print(" Right Distance: ");
+  Serial.println(distanceRight);
+  Serial.print(" Front Distance: ");
+  Serial.println(distanceFront);
 
     if (distanceFront <= 220) {
         ledcWrite(PWM_CHANNEL, 500);
@@ -138,29 +147,26 @@ void automaticDriveMode() {
         motors.forward();
     }
 
-    // Timeout handling for both sensors
-    if (sensorLeft.timeoutOccurred()) { 
-        Serial.println(" TIMEOUT on Left Sensor");
-    }
-    if (sensorRight.timeoutOccurred()) { 
-        Serial.println(" TIMEOUT on Right Sensor");
-    }
+  // Timeout handling for both sensors
+  if (sensorLeft.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Left Sensor");
+  }
+  if (sensorRight.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Right Sensor");
+  }
 
-    if (sensorFront.timeoutOccurred()) { 
-        Serial.println(" TIMEOUT on Front Sensor");
-    }
-
-    // ************************ END AUTOMATIC DRIVE MODE ************************ //
+  if (sensorFront.timeoutOccurred()) { 
+    Serial.println(" TIMEOUT on Front Sensor");
+  }
 }
-
-// ************************* JOYSTICK DRIVE MODE ************************* //
+  // ************************ END AUTOMATIC DRIVE MODE ************************ //
 
 void manualMode() {
     // int inputX = analogRead(ManualpinX); // Read X-axis value  
     // int inputY = analogRead(ManualpinY); // Read X-axis value
 
-    int joyPinX = myJoystick.positionX;
-    int joyPinY = myJoystick.positionY;
+    int joyPinX = myJoystick.positionXmotor;
+    int joyPinY = myJoystick.positionYmotor;
 
 
     Serial.println("X value is ");
@@ -169,7 +175,7 @@ void manualMode() {
     Serial.println("Y value is ");
     Serial.println(joyPinY);
 
-    if (joyPinY > joystick_center + joystick_threshold) { // Forward
+    if (joyPinY > joystick_center + joystick_threshold) { // Forward 
         if (joyPinX > joystick_center + joystick_threshold) {
             motors.turnSmoothLeft(); // Forward Left
             Serial.println("Turning forward left");
@@ -212,45 +218,43 @@ void manualMode() {
     // Delay here for smooth movements with the joystick
     delay(100);
 }
-// ************************* JOYSTICK END DRIVE MODE ************************* //
 
 // SETUP FOR BUTTON DRIVE TOGGLE //
 
-bool toggleDrive = false;
-bool lastClickState_Motor = false;
+// bool toggleDrive = false;
+// bool lastClickState_Motor = false;
 
 TaskHandle_t driveToggleTaskHandle;
 
 void driveToggle(void* pvParameters) {
     while (true) {
+        // int clickValue_motor = myJoystick.toggleDriveMode;
         
-        // Pulling in all the values here needed for joystick
-        int xManual = myJoystick.positionXmotor;
-        int yManual = myJoystick.positionYmotor;
+        // if (clickValue_motor == LOW && lastClickState_Motor == HIGH) {
+        //     toggleDrive = !toggleDrive;
+        //     Serial.println("Drive mode toggled");
+        // }
+        // lastClickState_Motor = clickValue_motor;
+        bool toggleDrive = myJoystick.toggleDriveMode;
+
+        // Serial.print("Drive mode: ");
+        // Serial.println(toggleDrive ? "Automatic" : "Manual");
         
-        // Click value in here from same struct 
-        int clickValue_motor = myJoystick.toggleDriveMode;
-
-        // IF statement that checks button state compared to last click
-        if (clickValue_motor == LOW && lastClickState_Motor == HIGH) {
-            toggleDrive = !toggleDrive;
-        }
-
-        // Sends the latest click back to the if loop variable
-        lastClickState_Motor = clickValue_motor;
-
-        if (toggleDrive) 
-        {
+        if (toggleDrive) {
             automaticDriveMode();
             Serial.println("GOING AUTOMATIC");
-        }
-        else 
-        {
+            
+        } else {
             manualMode();
             Serial.println("MANUAL");
+            Serial.println(myJoystick.positionXmotor);
+            Serial.print("Y position: ");
+            Serial.println(myJoystick.positionYmotor);
+            
         }
+        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
     }
 }
 
-// END BUTTON DRIVE TOGGLE //
+  // ------------------------------------------------------------------------------------------------
 
