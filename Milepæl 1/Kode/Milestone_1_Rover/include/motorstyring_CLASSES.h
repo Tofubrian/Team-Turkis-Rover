@@ -5,7 +5,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h> 
-
+#include <buzzer.h>
+#include <redLED.h>
 // MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
 
 class MotorController {
@@ -65,6 +66,9 @@ public:
         ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
         Serial.println("Moving back");
         // buzzerActive();
+        customBuzzerLoop(); //activates the buzzer.h function
+        redLEDloop(); //activates the redLED.h function
+
     }
 
     void stop() {
