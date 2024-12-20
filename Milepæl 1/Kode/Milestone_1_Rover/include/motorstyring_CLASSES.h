@@ -49,7 +49,7 @@ public:
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse for motor B
     }
 
-    void forward(int speed = 255) {
+    void forward(int speed = 255) { 
         ledcWrite(pwmChannelA1, speed);     // Forward motor A
         ledcWrite(pwmChannelA2, 0); // Deactivate forward A
         ledcWrite(pwmChannelB1, speed);     // Forward motor B

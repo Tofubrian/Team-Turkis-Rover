@@ -51,12 +51,14 @@ void moveServos(void* pvParameters) {
         int xValue = myJoystick.positionX;
         int yValue = myJoystick.positionY;
 
-        // Read and handle toggle state
-        int clickValue = myJoystick.toggleState;
-        if (clickValue == LOW && lastClickState == HIGH) {
-            toggleServos = !toggleServos; // Toggle servo group
-        }
-        lastClickState = clickValue;
+        bool toggleServos = myJoystick.toggleState;
+
+        // // Read and handle toggle state
+        // int clickValue = myJoystick.toggleState;
+        // if (clickValue == LOW && lastClickState == HIGH) {
+        //     toggleServos = !toggleServos; // Toggle servo group
+        // }
+        // lastClickState = clickValue;
 
         // Debugging: Print joystick and toggle information
         Serial.print("Joystick X: "); Serial.println(xValue);
