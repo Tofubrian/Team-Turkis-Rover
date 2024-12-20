@@ -94,7 +94,7 @@ void setup() {
         NULL, // Task input parameter
         1, // Priority of the the task
         &moveServosTaskHandle, // Task handle
-        1); // Core to run on
+        2); // Core to run on
 
     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
 }
