@@ -32,6 +32,9 @@ void act(void *parameter) {
             Serial.println(receivedData.positionYmotor);
             Serial.print("Toggle State: ");
             Serial.println(receivedData.toggleDriveMode);
+            Serial.println(receivedData.positionX);
+            Serial.println(receivedData.positionY);
+            Serial.println(receivedData.toggleState);
         }
         vTaskDelay(pdMS_TO_TICKS(20)); // Delay for processing
     }
@@ -44,7 +47,7 @@ void setup() {
     // Setup motor functions
     setupMotor();
 
-    // Setup servo arm
+    // // Setup servo arm
     robotArmSetup();
 
     // Create the queue to store struct_message data
@@ -64,7 +67,7 @@ void setup() {
         "ListenerTask", // Name of the task
         10000,          // Stack size in words
         NULL,           // Task input parameter
-        2,              // Priority of the task
+        1,              // Priority of the task
         &ListenerTask,  // Task handle
         0);             // Core on which to run
 
@@ -92,9 +95,9 @@ void setup() {
         "Move Servos", // Name of the task
         10000, // Stack size in words
         NULL, // Task input parameter
-        1, // Priority of the the task
+        2, // Priority of the the task
         &moveServosTaskHandle, // Task handle
-        2); // Core to run on
+        0); // Core to run on
 
     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
 }

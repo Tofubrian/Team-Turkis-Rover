@@ -8,7 +8,7 @@
 const int joystick_center = 1900; // Center of the joystick // 2048
 const int joystick_threshold = 300; // Dead zone threshold // 200
 const int joystick_max_value = 4095; // Maximum reading for x,y axis
-const int joystick_min_value = 462; // Minimum reading for x,y axis
+const int joystick_min_value = 0; // Minimum reading for x,y axis
 const int MOTOR_MAX_SPEED = 255; // Maximum motor speed
 
 MotorController motors(25, 26, 14, 12);  // A1, A2, B1, B2
@@ -177,7 +177,7 @@ void manualMode() {
 
     if (joyPinY > joystick_center + joystick_threshold) { // Forward 
         if (joyPinX > joystick_center + joystick_threshold) {
-            motors.turnSmoothLeft(); // Forward Left
+            motors.turnLeft(); // Forward Left
             Serial.println("Turning forward left");
         }
         else if (joyPinX < joystick_center - joystick_threshold) {
@@ -216,7 +216,7 @@ void manualMode() {
         Serial.println("Idle mode");
     }
     // Delay here for smooth movements with the joystick
-    delay(100);
+    delay(50);
 }
 
 // SETUP FOR BUTTON DRIVE TOGGLE //
@@ -241,15 +241,16 @@ void driveToggle(void* pvParameters) {
         // Serial.println(toggleDrive ? "Automatic" : "Manual");
         
         if (toggleDrive) {
-            automaticDriveMode();
-            Serial.println("GOING AUTOMATIC");
+            manualMode();
+            
             
         } else {
-            manualMode();
-            Serial.println("MANUAL");
-            Serial.println(myJoystick.positionXmotor);
-            Serial.print("Y position: ");
-            Serial.println(myJoystick.positionYmotor);
+            automaticDriveMode();
+            Serial.println("GOING AUTOMATIC");
+            // Serial.println("MANUAL");
+            // Serial.println(myJoystick.positionXmotor);
+            // Serial.print("Y position: ");
+            // Serial.println(myJoystick.positionYmotor);
             
         }
         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce

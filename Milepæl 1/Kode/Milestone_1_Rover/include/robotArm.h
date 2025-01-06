@@ -38,9 +38,9 @@ const int SERVO_STEP_SIZE = 2;  // Increment/decrement step size for movement
 const int JOYSTICK_CENTER_MIN = 1600;
 const int JOYSTICK_CENTER_MAX = 2100;
 
-// Variables
-bool toggleServos = false;  // Tracks which servos to control
-bool lastClickState = HIGH; // Debounce helper for joystick button
+// // Variables
+// bool toggleServos = false;  // Tracks which servos to control
+// bool lastClickState = HIGH; // Debounce helper for joystick button
 
 // FreeRTOS task handle
 extern TaskHandle_t moveServosTaskHandle;
