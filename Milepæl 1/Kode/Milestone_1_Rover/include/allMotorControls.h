@@ -86,7 +86,7 @@ void setupMotor() {
   sensorRight.setAddress(0x30); // Set unique address for right sensor
   sensorRight.startContinuous();
 
-  // Initialize the right sensor
+  // Initialize the front sensor
   digitalWrite(XSHUT_FRONT, HIGH);
   delay(10); // Allow time for sensor startup
   if (!sensorFront.init()) {
