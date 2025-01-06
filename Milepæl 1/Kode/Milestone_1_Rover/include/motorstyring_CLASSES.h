@@ -50,7 +50,7 @@ public:
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse for motor B
     }
 
-    void forward(int speed = 255) { 
+    void backward(int speed = 255) { 
         ledcWrite(pwmChannelA1, speed);     // Forward motor A
         ledcWrite(pwmChannelA2, 0); // Deactivate forward A
         ledcWrite(pwmChannelB1, speed);     // Forward motor B
@@ -59,15 +59,16 @@ public:
         Serial.println("Moving forward");
     }
 
-    void backward(int speed = 255) {
+    void forward(int speed = 255) {
         ledcWrite(pwmChannelA1, 0);     // Deactivate forward
         ledcWrite(pwmChannelA2, speed); // Activate reverse for motor A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
         ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
         Serial.println("Moving back");
-        // buzzerActive();
-        customBuzzerLoop(); //activates the buzzer.h function
-        redLEDloop(); //activates the redLED.h function
+        buzzerActive = true;
+        redLEDActive = true;
+        // customBuzzerLoop(); //activates the buzzer.h function
+        // redLEDloop(); //activates the redLED.h function
 
     }
 

@@ -7,8 +7,15 @@
 #include <allMotorcontrols.h>
 #include "receiver.h" // Include the receiver header for the listen task
 #include <robotArm.h>
+#include <buzzer.h>
+#include <redLED.h>
 
 // *********************** END INCLUDE LIBRARIES ************************ //
+
+bool buzzerActive = false;
+
+// Global variable to control LED state
+bool redLEDActive = false;
 
 // Task handles
 TaskHandle_t ListenerTask;
@@ -40,6 +47,8 @@ void act(void *parameter) {
     }
 }
 
+
+
 void setup() {
     // Setting serial monitor speed for debug
     Serial.begin(115200);
@@ -49,6 +58,9 @@ void setup() {
 
     // // Setup servo arm
     robotArmSetup();
+
+    // Initialize the buzzer pin
+    initializeBuzzerPin();
 
     // Create the queue to store struct_message data
     q = xQueueCreate(20, sizeof(struct_message));
@@ -79,7 +91,7 @@ void setup() {
         NULL,           // Task input parameter
         1,              // Priority of the task
         &ActionTask,    // Task handle
-        1);             // Core on which to run
+        0);             // Core on which to run
     
     xTaskCreatePinnedToCore(
         driveToggle,            // Function to implement the task
@@ -88,7 +100,7 @@ void setup() {
         NULL,           // Task input parameter
         1,              // Priority of the task
         &driveToggleTaskHandle,    // Task handle
-        1);
+        0);
 
     xTaskCreatePinnedToCore(
         moveServos, // Function to implement the task
@@ -97,7 +109,27 @@ void setup() {
         NULL, // Task input parameter
         2, // Priority of the the task
         &moveServosTaskHandle, // Task handle
-        0); // Core to run on
+        1); // Core to run on
+
+    // Create the buzzer task
+    xTaskCreatePinnedToCore(
+        buzzertoggle,     // Function to implement the task
+        "BuzzerTask",     // Name of the task
+        1024,             // Stack size in words
+        NULL,             // Task input parameter
+        1,                // Priority of the task
+        NULL,             // Task handle (not used)
+        1);
+    
+    // Create the red LED task
+    xTaskCreatePinnedToCore(
+        redLEDtoggle,      // Function to implement the task
+        "RedLEDTask",      // Name of the task
+        1024,              // Stack size in words
+        NULL,              // Task input parameter
+        1,                 // Priority of the task
+        NULL,              // Task handle (not used)
+        1);  
 
     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
 }
