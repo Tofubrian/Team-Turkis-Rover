@@ -29,8 +29,8 @@ void manualMode() {
     // int inputX = analogRead(ManualpinX); // Read X-axis value  
     // int inputY = analogRead(ManualpinY); // Read X-axis value
 
-    int joyPinX = myJoystick.positionXmotor;
-    int joyPinY = myJoystick.positionYmotor;
+    int joyPinX = myJoystick.positionX;
+    int joyPinY = myJoystick.positionY;
 
 
     Serial.println("X value is ");

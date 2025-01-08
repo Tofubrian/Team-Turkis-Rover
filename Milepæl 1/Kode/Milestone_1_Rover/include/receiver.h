@@ -6,6 +6,8 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#pragma once
+
 int valueX = 0; // to store the X-axis value
 int valueY = 0; // to store the Y-axis value
 extern bool buttonPressed = false; 
@@ -16,9 +18,9 @@ typedef struct struct_message {
   int positionX;
   int positionY;
   bool toggleState;
-  int positionXmotor;
-  int positionYmotor;
-  bool toggleDriveMode;
+  // int positionXmotor;
+  // int positionYmotor;
+  // bool toggleDriveMode;
 } struct_message;
 
 // Create a struct_message called myJoystick
