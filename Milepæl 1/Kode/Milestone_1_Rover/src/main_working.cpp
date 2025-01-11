@@ -1,0 +1,153 @@
+// // *********************** INCLUDE OF ALL LIBRARIES NEEDED ************************ //
+
+// #include <Arduino.h>
+// #include <Wire.h>
+// #include <VL53L0X.h>
+// #include <motorstyring_CLASSES.h>
+// #include <allMotorcontrols.h>
+// #include "receiver.h" // Include the receiver header for the listen task
+// #include <robotArm.h>
+// #include <buzzer.h>
+// #include <redLED.h>
+// #include <toggleMode.h>
+
+// // *********************** END INCLUDE LIBRARIES ************************ //
+
+// volatile bool buzzerActive = false;
+
+// // Global variable to control LED state
+// volatile bool redLEDActive = false;
+
+// // Task handles
+// TaskHandle_t ListenerTask;
+// TaskHandle_t ActionTask;
+// TaskHandle_t moveServosTaskHandle;
+
+// // FreeRTOS queue
+// QueueHandle_t q = NULL;
+// struct_message myJoystick;  // Definition of the global joystick data structure
+
+// // Act task to process received data
+// void act(void *parameter) {
+//     struct_message receivedData; // Struct to store received data
+//     for (;;) {
+//         // Wait for data from the queue
+//         if (xQueueReceive(q, &receivedData, portMAX_DELAY) == pdPASS) {
+//             Serial.println("Data received on Core 1:");
+//             Serial.print("X: ");
+//             Serial.println(receivedData.positionXmotor);
+//             Serial.print("Y: ");
+//             Serial.println(receivedData.positionYmotor);
+//             Serial.print("Toggle State: ");
+//             Serial.println(receivedData.toggleDriveMode);
+//             Serial.println(receivedData.positionX);
+//             Serial.println(receivedData.positionY);
+//             Serial.println(receivedData.toggleState);
+//         }
+//         vTaskDelay(pdMS_TO_TICKS(20)); // Delay for processing
+//     }
+// }
+
+
+
+// void setup() {
+//     // Setting serial monitor speed for debug
+//     Serial.begin(115200);
+
+//     // Setup motor functions
+//     setupMotor();
+
+//     // // Setup servo arm
+//     robotArmSetup();
+
+//     // Setup for the LED used for backlight
+//     redLEDsetup();
+
+//     // Initialize the buzzer pin
+//     buzzerSetup();
+
+//     // Create the queue to store struct_message data
+//     q = xQueueCreate(20, sizeof(struct_message));
+//     if (q != NULL) {
+//         Serial.println("Queue created successfully");
+//     } else {
+//         Serial.println("Failed to create queue");
+//         return;
+//     }
+
+//     // *********************** DEFINITION OF THREADING TASKS ************************ //
+
+//     // Create the listener task on core 0
+//     xTaskCreatePinnedToCore(
+//         listen,         // Function to implement the task
+//         "ListenerTask", // Name of the task
+//         10000,          // Stack size in words
+//         NULL,           // Task input parameter
+//         0,              // Priority of the task
+//         &ListenerTask,  // Task handle
+//         0);             // Core on which to run
+
+//     // Create the action task on core 1
+//     xTaskCreatePinnedToCore(
+//         act,            // Function to implement the task
+//         "ActionTask",   // Name of the task
+//         10000,          // Stack size in words
+//         NULL,           // Task input parameter
+//         1,              // Priority of the task
+//         &ActionTask,    // Task handle
+//         0);             // Core on which to run
+    
+//     xTaskCreatePinnedToCore(
+//         driveToggle,            // Function to implement the task
+//         "Drive Mode Toggle",   // Name of the task
+//         10000,          // Stack size in words
+//         NULL,           // Task input parameter
+//         4,              // Priority of the task
+//         &driveToggleTaskHandle,    // Task handle
+//         0);
+
+//     xTaskCreatePinnedToCore(
+//         moveServos, // Function to implement the task
+//         "Move Servos", // Name of the task
+//         10000, // Stack size in words
+//         NULL, // Task input parameter
+//         50, // Priority of the the task
+//         &moveServosTaskHandle, // Task handle
+//         1); // Core to run on
+
+//     // Create the buzzer task
+//     xTaskCreatePinnedToCore(
+//         buzzertoggle, // Function to implement the task
+//         "BuzzerTask", // Name of the task
+//         10000, // Stack size in words
+//         NULL, // Task input parameter
+//         3, // Priority of the task
+//         &buzzertoggleTaskHandle, // Task handle 
+//         1);
+    
+//     // Create the red LED task
+//     xTaskCreatePinnedToCore(
+//         redLEDtoggle, // Function to implement the task
+//         "RedLEDTask", // Name of the task
+//         10000, // Stack size in words
+//         NULL, // Task input parameter
+//         2, // Priority of the task
+//         &redLEDtoggleTaskHandle, // Task handle 
+//         1);
+    
+//     // Change mode
+//     xTaskCreatePinnedToCore(
+//         switchModeTask, // Function to implement the task
+//         "Switch Mode Task", // Task name
+//         10000, // Stack size
+//         NULL, // Task parameters
+//         10, // Task priority
+//         &switchModeTaskTaskHandle // Task handle
+//         1);
+
+//     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
+// }
+
+// void loop() {
+//     // loopAutomatic(); // Custom function from your library
+// }

@@ -9,18 +9,17 @@
 #include <robotArm.h>
 #include <buzzer.h>
 #include <redLED.h>
+#include <toggleMode.h>
 
 // *********************** END INCLUDE LIBRARIES ************************ //
-
-volatile bool buzzerActive = false;
-
-// Global variable to control LED state
-volatile bool redLEDActive = false;
 
 // Task handles
 TaskHandle_t ListenerTask;
 TaskHandle_t ActionTask;
-TaskHandle_t moveServosTaskHandle;
+
+// Defining extern data types
+
+TaskHandle_t switchModeTaskTaskHandle = NULL;
 
 // FreeRTOS queue
 QueueHandle_t q = NULL;
@@ -82,7 +81,7 @@ void setup() {
         "ListenerTask", // Name of the task
         10000,          // Stack size in words
         NULL,           // Task input parameter
-        1,              // Priority of the task
+        0,              // Priority of the task
         &ListenerTask,  // Task handle
         0);             // Core on which to run
 
@@ -96,43 +95,15 @@ void setup() {
         &ActionTask,    // Task handle
         0);             // Core on which to run
     
+    // Change mode
     xTaskCreatePinnedToCore(
-        driveToggle,            // Function to implement the task
-        "Drive Mode Toggle",   // Name of the task
-        10000,          // Stack size in words
-        NULL,           // Task input parameter
-        1,              // Priority of the task
-        &driveToggleTaskHandle,    // Task handle
-        0);
-
-    xTaskCreatePinnedToCore(
-        moveServos, // Function to implement the task
-        "Move Servos", // Name of the task
-        10000, // Stack size in words
-        NULL, // Task input parameter
-        2, // Priority of the the task
-        &moveServosTaskHandle, // Task handle
-        1); // Core to run on
-
-    // Create the buzzer task
-    xTaskCreatePinnedToCore(
-        buzzertoggle, // Function to implement the task
-        "BuzzerTask", // Name of the task
-        10000, // Stack size in words
-        NULL, // Task input parameter
-        1, // Priority of the task
-        &buzzertoggleTaskHandle, // Task handle 
+        switchModeTask, // Function to implement the task
+        "Switch Mode Task", // Task name
+        10000, // Stack size
+        NULL, // Task parameters
+        10, // Task priority
+        &switchModeTaskTaskHandle, // Task handle
         1);
-    
-    // Create the red LED task
-    xTaskCreatePinnedToCore(
-        redLEDtoggle, // Function to implement the task
-        "RedLEDTask", // Name of the task
-        10000, // Stack size in words
-        NULL, // Task input parameter
-        1, // Priority of the task
-        &redLEDtoggleTaskHandle, // Task handle 
-        1);  
 
     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
 }

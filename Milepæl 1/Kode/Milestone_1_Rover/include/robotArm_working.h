@@ -1,0 +1,122 @@
+// #include <Arduino.h>
+// #include <ESP32Servo.h>
+// #include <receiver.h>
+
+// // Pin defintion for servos on arm
+// // Servo objects
+// Servo baseServo;
+// Servo joint1Servo;
+// Servo joint2Servo;
+// Servo grabServo;
+
+// // Servo pin definitions
+// const int baseServoPin = 23;
+// const int joint1ServoPin = 32;
+// const int joint2ServoPin = 33;
+// const int grabServoPin = 19;
+
+// // Variable to store positions of servos, also sets starting positions for servos
+// int currentBasePosition = 150;
+// int currentJoint1Position = 120;
+// int currentJoint2Position = 90;
+// int currentGrabPosition = 120;
+
+// // Constants for servo angles
+// const int BASE_MIN_ANGLE = 30;
+// const int BASE_MAX_ANGLE = 150;
+// const int JOINT1_MIN_ANGLE = 80;
+// const int JOINT1_MAX_ANGLE = 150;
+// const int JOINT2_MIN_ANGLE = 70;
+// const int JOINT2_MAX_ANGLE = 120;
+// const int GRAB_MIN_ANGLE = 80;
+// const int GRAB_MAX_ANGLE = 160;
+
+// // Movement speed
+// const int SERVO_STEP_SIZE = 2;  // Increment/decrement step size for movement
+
+// // Joystick dead zone
+// const int JOYSTICK_CENTER_MIN = 1600;
+// const int JOYSTICK_CENTER_MAX = 2100;
+
+// // // Variables
+// // bool toggleServos = false;  // Tracks which servos to control
+// // bool lastClickState = HIGH; // Debounce helper for joystick button
+
+// // FreeRTOS task handle
+// extern TaskHandle_t moveServosTaskHandle;
+
+// void moveServos(void* pvParameters) {
+//     while (true) {
+//         int valueX = myJoystick.positionX;
+//         int valueY = myJoystick.positionY;
+
+//         bool toggleServos = myJoystick.toggleState;
+
+//         // Debugging: Print joystick and toggle information
+//         Serial.print("Joystick X (Servo): "); Serial.println(valueX);
+//         Serial.print("Joystick Y (Servo): "); Serial.println(valueY);
+//         Serial.print("ToggleServos: "); Serial.println(toggleServos);
+
+//         if (toggleServos) {
+//             // Handle servo2 and grab control
+//             if (valueX < JOYSTICK_CENTER_MIN) {
+//                 currentJoint2Position = max(currentJoint2Position - SERVO_STEP_SIZE, JOINT2_MIN_ANGLE);
+//             }
+//             else if (valueX > JOYSTICK_CENTER_MAX) {
+//                 currentJoint2Position = min(currentJoint2Position + SERVO_STEP_SIZE, JOINT2_MAX_ANGLE);
+//             }
+//             joint2Servo.write(currentJoint2Position);
+
+//             if (valueY < JOYSTICK_CENTER_MIN) {
+//                 currentGrabPosition = max(currentGrabPosition - SERVO_STEP_SIZE, GRAB_MIN_ANGLE);
+//             }
+//             else if (valueY > JOYSTICK_CENTER_MAX) {
+//                 currentGrabPosition = min(currentGrabPosition + SERVO_STEP_SIZE, GRAB_MAX_ANGLE);
+//             }
+//             grabServo.write(currentGrabPosition);
+
+//             Serial.print("joint2Servo Position: "); Serial.println(currentJoint2Position);
+//             Serial.print("grabServo Position: "); Serial.println(currentGrabPosition);
+//         } 
+//         else {
+//             // Handle joint1 and base control
+//             if (valueX < JOYSTICK_CENTER_MIN) {
+//                 currentJoint1Position = max(currentJoint1Position - SERVO_STEP_SIZE, JOINT1_MIN_ANGLE);
+//             }
+//             else if (valueX > JOYSTICK_CENTER_MAX) {
+//                 currentJoint1Position = min(currentJoint1Position + SERVO_STEP_SIZE, JOINT1_MAX_ANGLE);
+//             }
+//             joint1Servo.write(currentJoint1Position);
+
+//             if (valueY < JOYSTICK_CENTER_MIN) {
+//                 currentBasePosition = max(currentBasePosition - SERVO_STEP_SIZE, BASE_MIN_ANGLE);
+//             }
+//             else if (valueY > JOYSTICK_CENTER_MAX) {
+//                 currentBasePosition = min(currentBasePosition + SERVO_STEP_SIZE, BASE_MAX_ANGLE);
+//             }
+//             baseServo.write(currentBasePosition);
+
+//             Serial.print("joint1Servo Position: "); Serial.println(currentJoint1Position);
+//             Serial.print("Base Position: "); Serial.println(currentBasePosition);
+//         }
+
+//         // Delay to maintain task frequency
+//         vTaskDelay(20 / portTICK_PERIOD_MS);
+//     }
+// }
+
+
+// void robotArmSetup() {
+//     // Attach servos
+//     baseServo.attach(baseServoPin);
+//     joint1Servo.attach(joint1ServoPin);
+//     joint2Servo.attach(joint2ServoPin);
+//     grabServo.attach(grabServoPin);
+
+//     // Initialize servos to center position
+//     baseServo.write(currentBasePosition);
+//     joint1Servo.write(currentJoint1Position);
+//     joint2Servo.write(currentJoint2Position);
+//     grabServo.write(currentGrabPosition);
+// }
+

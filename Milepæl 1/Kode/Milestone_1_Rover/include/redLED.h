@@ -1,56 +1,40 @@
-// #include <Arduino.h>
-// #include <buzzer.h>
-
-// const int redLEDPin = 4;
-
-
-// void redLEDloop () {
-//     pinMode(redLEDPin, OUTPUT);
-//     digitalWrite(redLEDPin, HIGH);
-// }
-
-// TaskHandle_t redLEDtoggle;
-
-// void redLEDtoggle(void* pvParameters) {
-//     while (true){
-//         redLEDloop();
-//         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
-//     }
-// }
 #ifndef LED_H
 #define LED_H
 
 #include <Arduino.h>
 
-extern TaskHandle_t redLEDtoggleTaskHandle;
-
 // Define the LED pin
 const int redLEDPin = 4;
 
 // Global variable to control the LED state
-extern volatile bool redLEDActive;
+volatile bool redLEDActive = false; // Initially, LED is off
 
 // Function to initialize the LED pin
 void redLEDsetup() {
     pinMode(redLEDPin, OUTPUT);
-    digitalWrite(redLEDPin, LOW);
+    digitalWrite(redLEDPin, LOW);  // Ensure the LED is off initially
 }
 
-// Function to handle the red LED behavior
+// Function to handle the red LED behavior based on redLEDActive state
 void redLEDloop() {
     if (redLEDActive) {
-        digitalWrite(redLEDPin, HIGH); // Turn on the LED
+        digitalWrite(redLEDPin, HIGH); // Turn on the LED when active
     } else {
-        // LED do nothing
+        digitalWrite(redLEDPin, LOW);  // Turn off the LED when not active
     }
 }
 
-// Task function for the red LED
-void redLEDtoggle(void* pvParameters) {
-    while (true) {
-        redLEDloop();                 // Call the LED loop function
-        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to manage task load
-    }
+// Function to control the LED based on backward() action
+void backwardLEDControl() {
+    // You can now call this in your backward() function to activate the LED when backward() is called
+    redLEDActive = true;  // Turn on the LED
+    redLEDloop();         // Update the LED state
+}
+
+// Function to turn off the LED if needed
+void stopBackwardLEDControl() {
+    redLEDActive = false; // Turn off the LED
+    redLEDloop();         // Update the LED state
 }
 
 #endif // LED_H

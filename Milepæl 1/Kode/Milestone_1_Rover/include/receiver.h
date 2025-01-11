@@ -8,6 +8,8 @@
 extern QueueHandle_t q; // Queue for communication between tasks
 
 
+
+
 // Structure to receive joystick data
 typedef struct struct_message {
     int positionX;
@@ -15,7 +17,7 @@ typedef struct struct_message {
     bool toggleState;
     int positionXmotor;
     int positionYmotor;
-    bool toggleDriveMode;
+    bool toggleDriveMode; 
 } struct_message;
 
 // Global variable to hold received data
@@ -33,6 +35,8 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
     // Serial.println(myJoystick.positionYmotor);
     Serial.print("Toggle state: ");
     Serial.println(myJoystick.toggleDriveMode);
+
+    
 
     // Send the received data to the FreeRTOS queue
     if (q != NULL) {

@@ -4,6 +4,8 @@
 #include <motorstyring_CLASSES.h>
 #include <receiver.h>
 
+#pragma once
+
 // Joystick predefined values
 const int joystick_center = 1900; // Center of the joystick // 2048
 const int joystick_threshold = 300; // Dead zone threshold // 200
@@ -162,20 +164,14 @@ void automaticDriveMode() {
   // ************************ END AUTOMATIC DRIVE MODE ************************ //
 
 void manualMode() {
-    // int inputX = analogRead(ManualpinX); // Read X-axis value  
-    // int inputY = analogRead(ManualpinY); // Read X-axis value
-
     int joyPinX = myJoystick.positionXmotor;
     int joyPinY = myJoystick.positionYmotor;
 
+    Serial.println("Entering manual mode");
+    Serial.print("Joystick X: "); Serial.println(joyPinX);
+    Serial.print("Joystick Y: "); Serial.println(joyPinY);
 
-    Serial.println("X value is ");
-    Serial.println(joyPinX);
-
-    Serial.println("Y value is ");
-    Serial.println(joyPinY);
-
-    if (joyPinY > joystick_center + joystick_threshold) { // Forward 
+    if (joyPinY > joystick_center + joystick_threshold) { // Forward
         if (joyPinX > joystick_center + joystick_threshold) {
             motors.turnLeft(); // Forward Left
             Serial.println("Turning forward left");
@@ -215,33 +211,16 @@ void manualMode() {
         motors.stop();
         Serial.println("Idle mode");
     }
+
     // Delay here for smooth movements with the joystick
     delay(50);
 }
 
-// SETUP FOR BUTTON DRIVE TOGGLE //
 
-// bool toggleDrive = false;
-// bool lastClickState_Motor = false;
 
-TaskHandle_t driveToggleTaskHandle;
 
-void driveToggle(void* pvParameters) {
-    while (true) {
-        bool toggleDrive = myJoystick.toggleDriveMode;
-        
-        if (toggleDrive) {
-            manualMode();
-            Serial.println("MANUAL MODE");
-            
-            
-        } else {
-            automaticDriveMode();
-            Serial.println("GOING AUTOMATIC");            
-        }
-        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
-    }
-}
+
+
 
   // ------------------------------------------------------------------------------------------------
 

@@ -1,64 +1,39 @@
-// #include <Arduino.h>
-
-// const int buzzerPin = 5; // Connect the passive buzzer to digital pin 5
- 
-
-// void customBuzzerLoop() {
-//   // Turn on the buzzer
-//   pinMode(buzzerPin, OUTPUT); // Set the buzzer pin as output
-//   tone(buzzerPin, 400); // Generate a 400 Hz tone
-//   //   delay(2000);          // Wait for 2 seconds
-
-//   // Turn off the buzzer
-//   //   noTone(buzzerPin);    // Stop the buzzer
-//   //   delay(1000);          // Wait for 1 second
-// }
-
-// TaskHandle_t buzzertoggle;
-
-// void buzzertoggle(void* pvParameters) {
-//     while (true){
-//         customBuzzerLoop();
-//         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
-
-//     }
-// }
 #ifndef BUZZER_H
 #define BUZZER_H
 
 #include <Arduino.h>
 
-// Task handle for the buzzer to run passively
-extern TaskHandle_t buzzertoggleTaskHandle;
-
 // Define the buzzer pin
 const int buzzerPin = 5; // Connect the passive buzzer to digital pin 5
 
 // Global variable to control buzzer state
-extern volatile bool buzzerActive;
+volatile bool buzzerActive = false; // Initially, buzzer is off
 
-// // Function to initialize the buzzer pin
+// Function to initialize the buzzer pin
 void buzzerSetup() {
     pinMode(buzzerPin, OUTPUT);
-    noTone(buzzerPin);
+    noTone(buzzerPin);  // Ensure the buzzer is off initially
 }
 
-// Function to handle the buzzer behavior
+// Function to handle the buzzer behavior based on buzzerActive state
 void customBuzzerLoop() {
     if (buzzerActive) {
-        tone(buzzerPin, 400); // Generate a 400 Hz tone
+        tone(buzzerPin, 400); // Generate a 400 Hz tone when active
     } else {
-        // Buzzer do nothing
+        noTone(buzzerPin);    // Stop the buzzer tone when not active
     }
 }
 
-// Task function for the buzzer
-void buzzertoggle(void* pvParameters) {
-    while (true) {
-        customBuzzerLoop();          // Call the buzzer loop function
-        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to manage task load
-    }
+// Function to turn on the buzzer
+void buzzerActivate() {
+    buzzerActive = true;  // Turn on the buzzer
+    customBuzzerLoop();   // Update the buzzer state
+}
+
+// Function to turn off the buzzer
+void buzzerDeactivate() {
+    buzzerActive = false;  // Turn off the buzzer
+    customBuzzerLoop();    // Update the buzzer state
 }
 
 #endif // BUZZER_H
-

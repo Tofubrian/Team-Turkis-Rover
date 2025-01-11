@@ -50,27 +50,24 @@ public:
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse for motor B
     }
 
-    void backward(int speed = 255) { 
+    void forward(int speed = 255) { 
         ledcWrite(pwmChannelA1, speed);     // Forward motor A
         ledcWrite(pwmChannelA2, 0); // Deactivate forward A
         ledcWrite(pwmChannelB1, speed);     // Forward motor B
         ledcWrite(pwmChannelB2, 0); // Deactivate forward B
-        buzzerActive = true;
-        redLEDActive = true;
+        backwardLEDControl();
+        buzzerActivate();
         Serial.println("Moving backwards");
     }
 
-    void forward(int speed = 255) {
+    void backward(int speed = 255) {
         ledcWrite(pwmChannelA1, 0);     // Deactivate forward
         ledcWrite(pwmChannelA2, speed); // Activate reverse for motor A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
         ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
         Serial.println("Moving forwards");
-        buzzerActive = false;
-        redLEDActive = false;
-        // customBuzzerLoop(); //activates the buzzer.h function
-        // redLEDloop(); //activates the redLED.h function
-
+        buzzerDeactivate();
+        stopBackwardLEDControl();
     }
 
     void stop() {
@@ -78,8 +75,8 @@ public:
         ledcWrite(pwmChannelA2, 0);
         ledcWrite(pwmChannelB1, 0);
         ledcWrite(pwmChannelB2, 0);
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
         Serial.println("Stopping motors");
     }
 
@@ -88,8 +85,8 @@ public:
         ledcWrite(pwmChannelA2, 0);     // Deactivate reverse A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward B
         ledcWrite(pwmChannelB2, speed); // Reverse B
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
         Serial.println("Turning Right");
     }
 
@@ -98,8 +95,8 @@ public:
         ledcWrite(pwmChannelA2, speed); // Reverse A
         ledcWrite(pwmChannelB1, speed); // Forward B
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse B
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
         Serial.println("Turning Left");
     }
 
@@ -108,8 +105,8 @@ public:
         ledcWrite(pwmChannelA2, 0);
         ledcWrite(pwmChannelB1, speed);
         ledcWrite(pwmChannelB2, 0);
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
     }
 
     void turnSmoothLeft(int speed = 255, int halfSpeed = 112) {
@@ -117,8 +114,8 @@ public:
         ledcWrite(pwmChannelA2, 0);
         ledcWrite(pwmChannelB1, halfSpeed);
         ledcWrite(pwmChannelB2, 0);
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
     }
 
     void backwardSmoothRight(int speed = 255, int halfSpeed = 112) {
@@ -127,8 +124,8 @@ public:
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
         ledcWrite(pwmChannelB2, speed); // Activate reverse for motor B
         Serial.println("Moving back");
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
     }
     
     void backwardSmoothLeft(int speed = 255, int halfSpeed = 112) {
@@ -137,8 +134,8 @@ public:
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
         ledcWrite(pwmChannelB2, halfSpeed); // Activate reverse for motor B
         Serial.println("Moving back");
-        buzzerActive = false;
-        redLEDActive = false;
+        buzzerDeactivate();
+        stopBackwardLEDControl();
     }
 
     void forwardSaveRight() {
@@ -154,8 +151,6 @@ public:
         turnLeft();
         delay(1000);
     }
-
-    
 };
 
 #endif // MOTORSTYRING_CLASSES_H
