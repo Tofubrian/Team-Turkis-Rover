@@ -22,24 +22,27 @@
 
 #include <Arduino.h>
 
+extern TaskHandle_t redLEDtoggleTaskHandle;
+
 // Define the LED pin
 const int redLEDPin = 4;
 
 // Global variable to control the LED state
-extern bool redLEDActive;
+extern volatile bool redLEDActive;
+
+// Function to initialize the LED pin
+void redLEDsetup() {
+    pinMode(redLEDPin, OUTPUT);
+    digitalWrite(redLEDPin, LOW);
+}
 
 // Function to handle the red LED behavior
 void redLEDloop() {
     if (redLEDActive) {
         digitalWrite(redLEDPin, HIGH); // Turn on the LED
     } else {
-        digitalWrite(redLEDPin, LOW);  // Turn off the LED
+        // LED do nothing
     }
-}
-
-// Function to initialize the LED pin
-void initializeRedLEDPin() {
-    pinMode(redLEDPin, OUTPUT);
 }
 
 // Task function for the red LED

@@ -28,24 +28,28 @@
 
 #include <Arduino.h>
 
+// Task handle for the buzzer to run passively
+extern TaskHandle_t buzzertoggleTaskHandle;
+
 // Define the buzzer pin
 const int buzzerPin = 5; // Connect the passive buzzer to digital pin 5
 
 // Global variable to control buzzer state
-extern bool buzzerActive;
+extern volatile bool buzzerActive;
+
+// // Function to initialize the buzzer pin
+void buzzerSetup() {
+    pinMode(buzzerPin, OUTPUT);
+    noTone(buzzerPin);
+}
 
 // Function to handle the buzzer behavior
 void customBuzzerLoop() {
     if (buzzerActive) {
         tone(buzzerPin, 400); // Generate a 400 Hz tone
     } else {
-        noTone(buzzerPin); // Stop the buzzer
+        // Buzzer do nothing
     }
-}
-
-// Function to initialize the buzzer pin
-void initializeBuzzerPin() {
-    pinMode(buzzerPin, OUTPUT);
 }
 
 // Task function for the buzzer

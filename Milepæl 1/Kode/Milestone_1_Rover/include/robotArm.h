@@ -16,7 +16,7 @@ const int joint2ServoPin = 33;
 const int grabServoPin = 19;
 
 // Variable to store positions of servos, also sets starting positions for servos
-int currentBasePosition = 120;
+int currentBasePosition = 150;
 int currentJoint1Position = 120;
 int currentJoint2Position = 90;
 int currentGrabPosition = 120;
@@ -48,8 +48,8 @@ extern TaskHandle_t moveServosTaskHandle;
 void moveServos(void* pvParameters) {
     while (true) {
         // Read joystick values
-        int xValue = myJoystick.positionX;
-        int yValue = myJoystick.positionY;
+        int valueX = myJoystick.positionX;
+        int valueY = myJoystick.positionY;
 
         bool toggleServos = myJoystick.toggleState;
 
@@ -61,25 +61,25 @@ void moveServos(void* pvParameters) {
         // lastClickState = clickValue;
 
         // Debugging: Print joystick and toggle information
-        Serial.print("Joystick X: "); Serial.println(xValue);
-        Serial.print("Joystick Y: "); Serial.println(yValue);
+        Serial.print("Joystick X: "); Serial.println(valueX);
+        Serial.print("Joystick Y: "); Serial.println(valueY);
         Serial.print("ToggleServos: "); Serial.println(toggleServos);
 
         if (toggleServos) {
             // Handle servo2 and grab control
-            if (xValue < JOYSTICK_CENTER_MIN) {
+            if (valueX < JOYSTICK_CENTER_MIN) {
                 currentJoint2Position = max(currentJoint2Position - SERVO_STEP_SIZE, JOINT2_MIN_ANGLE);
             }
-            else if (xValue > JOYSTICK_CENTER_MAX) {
+            else if (valueX > JOYSTICK_CENTER_MAX) {
                 currentJoint2Position = min(currentJoint2Position + SERVO_STEP_SIZE, JOINT2_MAX_ANGLE);
             }
             // Write only if position changes
             joint2Servo.write(currentJoint2Position);
 
-            if (yValue < JOYSTICK_CENTER_MIN) {
+            if (valueY < JOYSTICK_CENTER_MIN) {
                 currentGrabPosition = max(currentGrabPosition - SERVO_STEP_SIZE, GRAB_MIN_ANGLE);
             }
-            else if (yValue > JOYSTICK_CENTER_MAX) {
+            else if (valueY > JOYSTICK_CENTER_MAX) {
                 currentGrabPosition = min(currentGrabPosition + SERVO_STEP_SIZE, GRAB_MAX_ANGLE);
             }
             // Write only if position changes
@@ -90,19 +90,19 @@ void moveServos(void* pvParameters) {
         } 
         else {
             // Handle joint1 and base control
-            if (xValue < JOYSTICK_CENTER_MIN) {
+            if (valueX < JOYSTICK_CENTER_MIN) {
                 currentJoint1Position = max(currentJoint1Position - SERVO_STEP_SIZE, JOINT1_MIN_ANGLE);
             }
-            else if (xValue > JOYSTICK_CENTER_MAX) {
+            else if (valueX > JOYSTICK_CENTER_MAX) {
                 currentJoint1Position = min(currentJoint1Position + SERVO_STEP_SIZE, JOINT1_MAX_ANGLE);
             }
             // Write only if position changes
             joint1Servo.write(currentJoint1Position);
 
-            if (yValue < JOYSTICK_CENTER_MIN) {
+            if (valueY < JOYSTICK_CENTER_MIN) {
                 currentBasePosition = max(currentBasePosition - SERVO_STEP_SIZE, BASE_MIN_ANGLE);
             }
-            else if (yValue > JOYSTICK_CENTER_MAX) {
+            else if (valueY > JOYSTICK_CENTER_MAX) {
                 currentBasePosition = min(currentBasePosition + SERVO_STEP_SIZE, BASE_MAX_ANGLE);
             }
             // Write only if position changes

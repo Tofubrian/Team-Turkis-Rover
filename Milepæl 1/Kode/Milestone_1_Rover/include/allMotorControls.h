@@ -228,30 +228,16 @@ TaskHandle_t driveToggleTaskHandle;
 
 void driveToggle(void* pvParameters) {
     while (true) {
-        // int clickValue_motor = myJoystick.toggleDriveMode;
-        
-        // if (clickValue_motor == LOW && lastClickState_Motor == HIGH) {
-        //     toggleDrive = !toggleDrive;
-        //     Serial.println("Drive mode toggled");
-        // }
-        // lastClickState_Motor = clickValue_motor;
         bool toggleDrive = myJoystick.toggleDriveMode;
-
-        // Serial.print("Drive mode: ");
-        // Serial.println(toggleDrive ? "Automatic" : "Manual");
         
         if (toggleDrive) {
             manualMode();
+            Serial.println("MANUAL MODE");
             
             
         } else {
             automaticDriveMode();
-            Serial.println("GOING AUTOMATIC");
-            // Serial.println("MANUAL");
-            // Serial.println(myJoystick.positionXmotor);
-            // Serial.print("Y position: ");
-            // Serial.println(myJoystick.positionYmotor);
-            
+            Serial.println("GOING AUTOMATIC");            
         }
         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
     }
