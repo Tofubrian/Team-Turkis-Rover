@@ -118,6 +118,13 @@ void moveServos(void* pvParameters) {
 }
 
 void robotArmSetup() {
+    // Servo motors set period hertz
+    baseServo.setPeriodHertz(50);
+    joint1Servo.setPeriodHertz(50);
+    joint2Servo.setPeriodHertz(50);
+    grabServo.setPeriodHertz(50);
+    
+    
     // Attach servos
     baseServo.attach(baseServoPin);
     joint1Servo.attach(joint1ServoPin);

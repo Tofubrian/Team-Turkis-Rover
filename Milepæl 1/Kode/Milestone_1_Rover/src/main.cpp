@@ -12,10 +12,10 @@
 
 // *********************** END INCLUDE LIBRARIES ************************ //
 
-volatile bool buzzerActive = false;
+// volatile bool buzzerActive = false;
 
-// Global variable to control LED state
-volatile bool redLEDActive = false;
+// // Global variable to control LED state
+// volatile bool redLEDActive = false;
 
 // Task handles
 TaskHandle_t ListenerTask;
@@ -59,11 +59,11 @@ void setup() {
     // // Setup servo arm
     robotArmSetup();
 
-    // Setup for the LED used for backlight
-    redLEDsetup();
+    // // Setup for the LED used for backlight
+    // redLEDsetup();
 
-    // Initialize the buzzer pin
-    buzzerSetup();
+    // // Initialize the buzzer pin
+    // buzzerSetup();
 
     // Create the queue to store struct_message data
     q = xQueueCreate(20, sizeof(struct_message));
@@ -114,25 +114,25 @@ void setup() {
         &moveServosTaskHandle, // Task handle
         1); // Core to run on
 
-    // Create the buzzer task
-    xTaskCreatePinnedToCore(
-        buzzertoggle, // Function to implement the task
-        "BuzzerTask", // Name of the task
-        10000, // Stack size in words
-        NULL, // Task input parameter
-        1, // Priority of the task
-        &buzzertoggleTaskHandle, // Task handle 
-        1);
+    // // Create the buzzer task
+    // xTaskCreatePinnedToCore(
+    //     buzzertoggle, // Function to implement the task
+    //     "BuzzerTask", // Name of the task
+    //     10000, // Stack size in words
+    //     NULL, // Task input parameter
+    //     1, // Priority of the task
+    //     &buzzertoggleTaskHandle, // Task handle 
+    //     1);
     
-    // Create the red LED task
-    xTaskCreatePinnedToCore(
-        redLEDtoggle, // Function to implement the task
-        "RedLEDTask", // Name of the task
-        10000, // Stack size in words
-        NULL, // Task input parameter
-        1, // Priority of the task
-        &redLEDtoggleTaskHandle, // Task handle 
-        1);  
+    // // Create the red LED task
+    // xTaskCreatePinnedToCore(
+    //     redLEDtoggle, // Function to implement the task
+    //     "RedLEDTask", // Name of the task
+    //     10000, // Stack size in words
+    //     NULL, // Task input parameter
+    //     1, // Priority of the task
+    //     &redLEDtoggleTaskHandle, // Task handle 
+    //     1);  
 
     // *********************** END OF DEFINITION OF THREADING TASKS ************************ //
 }
