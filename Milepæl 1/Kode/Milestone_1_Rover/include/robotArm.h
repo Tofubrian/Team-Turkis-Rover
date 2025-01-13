@@ -104,6 +104,12 @@ void moveServos() {
 
 
 void robotArmSetup() {
+    // Set hertz for the servos
+    baseServo.setPeriodHertz(50);
+    joint1Servo.setPeriodHertz(50);
+    joint2Servo.setPeriodHertz(50);
+    grabServo.setPeriodHertz(50);
+
     // Attach servos
     baseServo.attach(baseServoPin);
     joint1Servo.attach(joint1ServoPin);
