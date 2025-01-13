@@ -1,56 +1,40 @@
-// // #include <Arduino.h>
-// // #include <buzzer.h>
+#ifndef LED_H
+#define LED_H
 
-// // const int redLEDPin = 4;
+#include <Arduino.h>
 
+// Define the LED pin
+const int redLEDPin = 4;
 
-// // void redLEDloop () {
-// //     pinMode(redLEDPin, OUTPUT);
-// //     digitalWrite(redLEDPin, HIGH);
-// // }
+// Global variable to control the LED state
+volatile bool redLEDActive = false; // Initially, LED is off
 
-// // TaskHandle_t redLEDtoggle;
+// Function to initialize the LED pin
+void redLEDsetup() {
+    pinMode(redLEDPin, OUTPUT);
+    digitalWrite(redLEDPin, LOW);  // Ensure the LED is off initially
+}
 
-// // void redLEDtoggle(void* pvParameters) {
-// //     while (true){
-// //         redLEDloop();
-// //         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
-// //     }
-// // }
-// #ifndef LED_H
-// #define LED_H
+// Function to handle the red LED behavior based on redLEDActive state
+void redLEDloop() {
+    if (redLEDActive) {
+        digitalWrite(redLEDPin, HIGH); // Turn on the LED when active
+    } else {
+        digitalWrite(redLEDPin, LOW);  // Turn off the LED when not active
+    }
+}
 
-// #include <Arduino.h>
+// Function to control the LED based on backward() action
+void backwardLEDControl() {
+    // You can now call this in your backward() function to activate the LED when backward() is called
+    redLEDActive = true;  // Turn on the LED
+    redLEDloop();         // Update the LED state
+}
 
-// extern TaskHandle_t redLEDtoggleTaskHandle;
+// Function to turn off the LED if needed
+void stopBackwardLEDControl() {
+    redLEDActive = false; // Turn off the LED
+    redLEDloop();         // Update the LED state
+}
 
-// // Define the LED pin
-// const int redLEDPin = 4;
-
-// // Global variable to control the LED state
-// extern volatile bool redLEDActive;
-
-// // Function to initialize the LED pin
-// void redLEDsetup() {
-//     pinMode(redLEDPin, OUTPUT);
-//     digitalWrite(redLEDPin, LOW);
-// }
-
-// // Function to handle the red LED behavior
-// void redLEDloop() {
-//     if (redLEDActive) {
-//         digitalWrite(redLEDPin, HIGH); // Turn on the LED
-//     } else {
-//         // LED do nothing
-//     }
-// }
-
-// // Task function for the red LED
-// void redLEDtoggle(void* pvParameters) {
-//     while (true) {
-//         redLEDloop();                 // Call the LED loop function
-//         vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to manage task load
-//     }
-// }
-
-// #endif // LED_H
+#endif // LED_H

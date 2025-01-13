@@ -120,32 +120,60 @@ void automaticDriveMode() {
   Serial.print(" Front Distance: ");
   Serial.println(distanceFront);
 
-    if (distanceFront <= 220) {
-        ledcWrite(PWM_CHANNEL, 500);
-        motors.forwardSaveRight();
-        ledcWrite(PWM_CHANNEL, 0);
+  if (distanceFront < 370) {
+    motors.stop();
+    if (distanceRight > distanceLeft) {
+        motors.turnRight(); // Function to turn the rover to the right
+        delay(600);
+    } else {
+        motors.turnLeft();  // Function to turn the rover to the left
+        delay(600);
     }
-    else if (distanceFront <= 200 && distanceRight <= 200) {
-        motors.forwardSaveLeft();
-    }
-    else if (distanceFront <= 200 && distanceLeft <= 200) {
-        motors.forwardSaveRight();
-    }
-    else if (distanceLeft <= 200 && distanceRight <= 200) {
-        motors.forwardSaveRight();
-        delay(100);
-    }
-    else if (distanceLeft <= 200) {
-        motors.turnRight();
-        delay(100);
-    } 
-    else if (distanceRight <= 200) {
-        motors.turnLeft();
-        delay(100);
-    } 
-    else {
-        motors.forward();
-    }
+  }
+
+  else if (distanceFront < 500) {
+      motors.slow();
+  }
+
+  else if (distanceLeft <= 170) {
+      motors.turnRight();
+  }
+
+  else if (distanceRight <= 170) {
+      motors.turnLeft();
+  } 
+
+  else {
+      motors.forward();
+  }
+
+    // OLD AUTO MODE DRIVE BELOW
+    // if (distanceFront <= 220) {
+    //     ledcWrite(PWM_CHANNEL, 500);
+    //     motors.forwardSaveRight();
+    //     ledcWrite(PWM_CHANNEL, 0);
+    // }
+    // else if (distanceFront <= 200 && distanceRight <= 200) {
+    //     motors.forwardSaveLeft();
+    // }
+    // else if (distanceFront <= 200 && distanceLeft <= 200) {
+    //     motors.forwardSaveRight();
+    // }
+    // else if (distanceLeft <= 200 && distanceRight <= 200) {
+    //     motors.forwardSaveRight();
+    //     delay(100);
+    // }
+    // else if (distanceLeft <= 200) {
+    //     motors.turnRight();
+    //     delay(100);
+    // } 
+    // else if (distanceRight <= 200) {
+    //     motors.turnLeft();
+    //     delay(100);
+    // } 
+    // else {
+    //     motors.forward();
+    // }
 
   // Timeout handling for both sensors
   if (sensorLeft.timeoutOccurred()) { 
