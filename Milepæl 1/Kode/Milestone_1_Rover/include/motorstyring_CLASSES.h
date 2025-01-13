@@ -30,6 +30,7 @@ public:
     }
 
     void initMotors() {
+        
         // Set up PWM channels for each motor pin
         ledcSetup(pwmChannelA1, pwmFreq, pwmResolution);
         ledcSetup(pwmChannelA2, pwmFreq, pwmResolution);
@@ -80,7 +81,7 @@ public:
         Serial.println("Stopping motors");
     }
 
-    void turnRight(int speed = 255) {
+    void turnLeft(int speed = 255) {
         ledcWrite(pwmChannelA1, speed); // Forward A
         ledcWrite(pwmChannelA2, 0);     // Deactivate reverse A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward B
@@ -90,7 +91,7 @@ public:
         Serial.println("Turning Right");
     }
 
-    void turnLeft(int speed = 255) {
+    void turnRight(int speed = 255) {
         ledcWrite(pwmChannelA1, 0);     // Deactivate forward A
         ledcWrite(pwmChannelA2, speed); // Reverse A
         ledcWrite(pwmChannelB1, speed); // Forward B
