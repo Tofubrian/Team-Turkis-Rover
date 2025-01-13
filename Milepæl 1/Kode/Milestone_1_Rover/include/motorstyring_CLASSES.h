@@ -18,10 +18,10 @@ private:
     MotorPins pins;
     const int pwmFreq = 1000;  // PWM frequency in Hz (1 kHz)
     const int pwmResolution = 8;  // 8-bit resolution
-    const int pwmChannelA1 = 0;  // PWM channel for motor A, pin A1
-    const int pwmChannelA2 = 1;  // PWM channel for motor A, pin A2
-    const int pwmChannelB1 = 2;  // PWM channel for motor B, pin B1
-    const int pwmChannelB2 = 3;  // PWM channel for motor B, pin B2
+    const int pwmChannelA1 = 5;  // PWM channel for motor A, pin A1
+    const int pwmChannelA2 = 6;  // PWM channel for motor A, pin A2
+    const int pwmChannelB1 = 7;  // PWM channel for motor B, pin B1
+    const int pwmChannelB2 = 8;  // PWM channel for motor B, pin B2
     
 public:
     MotorController(int pinA1, int pinA2, int pinB1, int pinB2)
