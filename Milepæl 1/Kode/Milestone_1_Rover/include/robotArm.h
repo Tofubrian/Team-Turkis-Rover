@@ -11,8 +11,8 @@ Servo grabServo;
 
 // Servo pin definitions
 const int baseServoPin = 23;
-const int joint1ServoPin = 32;
-const int joint2ServoPin = 33;
+const int joint1ServoPin = 33;
+const int joint2ServoPin = 32;
 const int grabServoPin = 19;
 
 // Variable to store positions of servos, also sets starting positions for servos
