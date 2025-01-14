@@ -103,16 +103,16 @@ void setup() {
         NULL,           // Task input parameter
         1,              // Priority of the task
         &driveToggleTaskHandle,    // Task handle
-        0);
+        1);
 
     xTaskCreatePinnedToCore(
         moveServos, // Function to implement the task
         "Move Servos", // Name of the task
         10000, // Stack size in words
         NULL, // Task input parameter
-        2, // Priority of the the task
+        50, // Priority of the the task
         &moveServosTaskHandle, // Task handle
-        1); // Core to run on
+        0); // Core to run on
 
     // // Create the buzzer task
     // xTaskCreatePinnedToCore(

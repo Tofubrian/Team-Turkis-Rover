@@ -11,8 +11,8 @@ Servo grabServo;
 
 // Servo pin definitions
 const int baseServoPin = 23;
-const int joint1ServoPin = 33;
-const int joint2ServoPin = 32;
+const int joint1ServoPin = 32;
+const int joint2ServoPin = 33;
 const int grabServoPin = 19;
 
 // Variable to store positions of servos, also sets starting positions for servos
@@ -41,6 +41,27 @@ const int JOYSTICK_CENTER_MAX = 2100;
 // // Variables
 // bool toggleServos = false;  // Tracks which servos to control
 // bool lastClickState = HIGH; // Debounce helper for joystick button
+
+void robotArmSetup() {
+    // Servo motors set period hertz
+    baseServo.setPeriodHertz(50);
+    joint1Servo.setPeriodHertz(50);
+    joint2Servo.setPeriodHertz(50);
+    grabServo.setPeriodHertz(50);
+    
+    
+    // Attach servos
+    baseServo.attach(baseServoPin);
+    joint1Servo.attach(joint1ServoPin);
+    joint2Servo.attach(joint2ServoPin);
+    grabServo.attach(grabServoPin);
+
+    // Initialize servos to center position
+    baseServo.write(currentBasePosition);
+    joint1Servo.write(currentJoint1Position);
+    joint2Servo.write(currentJoint2Position);
+    grabServo.write(currentGrabPosition);
+}
 
 // FreeRTOS task handle
 extern TaskHandle_t moveServosTaskHandle;
@@ -117,24 +138,5 @@ void moveServos(void* pvParameters) {
     }
 }
 
-void robotArmSetup() {
-    // Servo motors set period hertz
-    baseServo.setPeriodHertz(50);
-    joint1Servo.setPeriodHertz(50);
-    joint2Servo.setPeriodHertz(50);
-    grabServo.setPeriodHertz(50);
-    
-    
-    // Attach servos
-    baseServo.attach(baseServoPin);
-    joint1Servo.attach(joint1ServoPin);
-    joint2Servo.attach(joint2ServoPin);
-    grabServo.attach(grabServoPin);
 
-    // Initialize servos to center position
-    baseServo.write(currentBasePosition);
-    joint1Servo.write(currentJoint1Position);
-    joint2Servo.write(currentJoint2Position);
-    grabServo.write(currentGrabPosition);
-}
 
