@@ -59,11 +59,11 @@ void setup() {
     // // Setup servo arm
     robotArmSetup();
 
-    // // Setup for the LED used for backlight
-    // redLEDsetup();
+    // Setup for the LED used for backlight
+    redLEDsetup();
 
-    // // Initialize the buzzer pin
-    // buzzerSetup();
+    // Initialize the buzzer pin
+    buzzerSetup();
 
     // Create the queue to store struct_message data
     q = xQueueCreate(20, sizeof(struct_message));

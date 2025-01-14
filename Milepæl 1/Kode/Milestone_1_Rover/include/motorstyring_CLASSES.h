@@ -50,7 +50,7 @@ public:
         ledcWrite(pwmChannelB2, 0);     // Deactivate reverse for motor B
     }
 
-    void forward(int speed = 255) { 
+    void forward(int speed = 200) { 
         ledcWrite(pwmChannelA1, speed);     // Forward motor A
         ledcWrite(pwmChannelA2, 0); // Deactivate forward A
         ledcWrite(pwmChannelB1, speed);     // Forward motor B
@@ -60,7 +60,7 @@ public:
         Serial.println("Moving backwards");
     }
 
-    void backward(int speed = 255) {
+    void backward(int speed = 200) {
         ledcWrite(pwmChannelA1, 0);     // Deactivate forward
         ledcWrite(pwmChannelA2, speed); // Activate reverse for motor A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward
@@ -81,7 +81,7 @@ public:
         Serial.println("Stopping motors");
     }
 
-    void turnLeft(int speed = 255) {
+    void turnLeft(int speed = 200) {
         ledcWrite(pwmChannelA1, speed); // Forward A
         ledcWrite(pwmChannelA2, 0);     // Deactivate reverse A
         ledcWrite(pwmChannelB1, 0);     // Deactivate forward B
@@ -91,7 +91,7 @@ public:
         Serial.println("Turning Right");
     }
 
-    void turnRight(int speed = 255) {
+    void turnRight(int speed = 200) {
         ledcWrite(pwmChannelA1, 0);     // Deactivate forward A
         ledcWrite(pwmChannelA2, speed); // Reverse A
         ledcWrite(pwmChannelB1, speed); // Forward B

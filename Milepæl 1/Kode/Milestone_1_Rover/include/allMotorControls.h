@@ -203,41 +203,41 @@ void manualMode() {
     Serial.println("Y value is ");
     Serial.println(joyPinY);
 
-    if (joyPinY > joystick_center + joystick_threshold) { // Forward 
-        if (joyPinX > joystick_center + joystick_threshold) {
-            motors.turnLeft(); // Forward Left
-            Serial.println("Turning forward left");
-        }
-        else if (joyPinX < joystick_center - joystick_threshold) {
-            motors.turnRight(); // Forward Right
-            Serial.println("Turning forward right");
-        }
-        else {
-            motors.forward(); // Straight Forward
-            Serial.println("Going forward");
-        }
+    if (joyPinX > joystick_center + joystick_threshold) { // Forward
+      if (joyPinY > joystick_center + joystick_threshold) {
+          motors.turnRight(); // Forward Right
+          Serial.println("Turning forward right");
+      }
+      else if (joyPinY < joystick_center - joystick_threshold) {
+          motors.turnLeft(); // Forward Left
+          Serial.println("Turning forward left");
+      }
+      else {
+          motors.forward(); // Straight Forward
+          Serial.println("Going forward");
+      }
     }
-    else if (joyPinY < joystick_center - joystick_threshold) { // Backward
-        if (joyPinX > joystick_center + joystick_threshold) {
-            motors.turnLeft(); // Backward Left
-            Serial.println("Backwards left");
-        }
-        else if (joyPinX < joystick_center - joystick_threshold) {
+    else if (joyPinX < joystick_center - joystick_threshold) { // Backward
+        if (joyPinY > joystick_center + joystick_threshold) {
             motors.turnRight(); // Backward Right
             Serial.println("Backwards right");
+        }
+        else if (joyPinY < joystick_center - joystick_threshold) {
+            motors.turnLeft(); // Backwards Left
+            Serial.println("Backwards left");
         }
         else {
             motors.backward(); // Straight Backward
             Serial.println("Going backward");
         }
     }
-    else if (joyPinX > joystick_center + joystick_threshold) { // Idle movement Right
-        motors.turnLeft();
-        Serial.println("Turning idle left");
-    }
-    else if (joyPinX < joystick_center - joystick_threshold) { // Idle movement Left
+    else if (joyPinY > joystick_center + joystick_threshold) { // Idle movement Right
         motors.turnRight();
         Serial.println("Turning idle right");
+    }
+    else if (joyPinY < joystick_center - joystick_threshold) { // Idle movement Left
+        motors.turnLeft();
+        Serial.println("Turning idle left");
     }
     else { // Idle
         motors.stop();
@@ -245,6 +245,7 @@ void manualMode() {
     }
     // Delay here for smooth movements with the joystick
     delay(50);
+
 }
 
 // SETUP FOR BUTTON DRIVE TOGGLE //
