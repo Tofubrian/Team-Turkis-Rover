@@ -24,10 +24,10 @@ int currentGrabPosition = 120;
 // Constants for servo angles
 const int BASE_MIN_ANGLE = 30;
 const int BASE_MAX_ANGLE = 150;
-const int JOINT1_MIN_ANGLE = 30; //80 orginale værdier
+const int JOINT1_MIN_ANGLE = 0; //80 orginale værdier
 const int JOINT1_MAX_ANGLE = 180; //150
-const int JOINT2_MIN_ANGLE = 30; //70
-const int JOINT2_MAX_ANGLE = 180; //120
+const int JOINT2_MIN_ANGLE = 0; //70
+const int JOINT2_MAX_ANGLE = 120; //120
 const int GRAB_MIN_ANGLE = 70; //80
 const int GRAB_MAX_ANGLE = 160;  //160
 
