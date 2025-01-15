@@ -17,17 +17,17 @@ const int grabServoPin = 19;
 
 // Variable to store positions of servos, also sets starting positions for servos
 int currentBasePosition = 150;
-int currentJoint1Position = 120;
-int currentJoint2Position = 90;
+int currentJoint1Position = 120; 
+int currentJoint2Position = 90;  // vesntre motor
 int currentGrabPosition = 120;
 
 // Constants for servo angles
 const int BASE_MIN_ANGLE = 30;
 const int BASE_MAX_ANGLE = 150;
-const int JOINT1_MIN_ANGLE = 80;
-const int JOINT1_MAX_ANGLE = 150;
-const int JOINT2_MIN_ANGLE = 70;
-const int JOINT2_MAX_ANGLE = 120;
+const int JOINT1_MIN_ANGLE = 30; //80 orginal værdier
+const int JOINT1_MAX_ANGLE = 180; //150
+const int JOINT2_MIN_ANGLE = 30; //70
+const int JOINT2_MAX_ANGLE = 180; //120
 const int GRAB_MIN_ANGLE = 80;
 const int GRAB_MAX_ANGLE = 160;
 
