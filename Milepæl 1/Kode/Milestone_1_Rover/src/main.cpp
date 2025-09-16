@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 #include <motorstyring_CLASSES.h>
-#include <allMotorcontrols.h>
+#include <allMotorControls.h>
 #include "receiver.h" // Include the receiver header for the listen task
 #include <robotArm.h>
 #include <buzzer.h>
@@ -63,7 +63,7 @@ void setup() {
     redLEDsetup();
 
     // Initialize the buzzer pin
-    buzzerSetup();
+    // buzzerSetup();
 
     // Create the queue to store struct_message data
     q = xQueueCreate(20, sizeof(struct_message));
@@ -101,7 +101,7 @@ void setup() {
         "Drive Mode Toggle",   // Name of the task
         10000,          // Stack size in words
         NULL,           // Task input parameter
-        1,              // Priority of the task
+        5,              // Priority of the task
         &driveToggleTaskHandle,    // Task handle
         0);
 
@@ -110,7 +110,7 @@ void setup() {
         "Move Servos", // Name of the task
         10000, // Stack size in words
         NULL, // Task input parameter
-        2, // Priority of the the task
+        20, // Priority of the the task
         &moveServosTaskHandle, // Task handle
         1); // Core to run on
 

@@ -28,16 +28,16 @@ VL53L0X sensorFront;
 
 
 
-const int PWM_CHANNEL = 0;    // ESP32 has 16 channels which can generate 16 independent waveforms
-const int PWM_FREQ = 500;     // Recall that Arduino Uno is ~490 Hz. Official ESP32 example uses 5,000Hz
-const int PWM_RESOLUTION = 8; // We'll use same resolution as Uno (8 bits, 0-255) but ESP32 can go up to 16 bits 
+// const int PWM_CHANNEL = 10;    // ESP32 has 16 channels which can generate 16 independent waveforms
+// const int PWM_FREQ = 500;     // Recall that Arduino Uno is ~490 Hz. Official ESP32 example uses 5,000Hz
+// const int PWM_RESOLUTION = 8; // We'll use same resolution as Uno (8 bits, 0-255) but ESP32 can go up to 16 bits 
 
-// The max duty cycle value based on PWM resolution (will be 255 if resolution is 8 bits)
-const int MAX_DUTY_CYCLE = (int)(pow(2, PWM_RESOLUTION) - 1); 
+// // The max duty cycle value based on PWM resolution (will be 255 if resolution is 8 bits)
+// const int MAX_DUTY_CYCLE = (int)(pow(2, PWM_RESOLUTION) - 1); 
 
-const int LED_OUTPUT_PIN = 33;
+// const int LED_OUTPUT_PIN = 13;
 
-const int DELAY_MS = 0;  // delay between fade increments
+// const int DELAY_MS = 0;  // delay between fade increments
 
 
 void setupMotor() {
@@ -45,11 +45,11 @@ void setupMotor() {
   // Setting serial monitor port
   Serial.begin(115200);
 
-// ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
-  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+// // ledcSetup(uint8_t channel, double freq, uint8_t resolution_bits);
+//   ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
 
-  // ledcAttachPin(uint8_t pin, uint8_t channel);
-  ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
+//   // ledcAttachPin(uint8_t pin, uint8_t channel);
+//   ledcAttachPin(LED_OUTPUT_PIN, PWM_CHANNEL);
 
   Wire.begin(); // Begin I2C communication
 
@@ -120,18 +120,18 @@ void automaticDriveMode() {
   Serial.print(" Front Distance: ");
   Serial.println(distanceFront);
 
-  if (distanceFront < 370) {
+  if (distanceFront < 590) {
     motors.stop();
     if (distanceRight > distanceLeft) {
         motors.turnRight(); // Function to turn the rover to the right
-        delay(600);
+        delay(0);
     } else {
         motors.turnLeft();  // Function to turn the rover to the left
-        delay(600);
+        delay(0);
     }
   }
 
-  else if (distanceFront < 500) {
+  else if (distanceFront < 950) {
       motors.slow();
   }
 
@@ -146,34 +146,6 @@ void automaticDriveMode() {
   else {
       motors.forward();
   }
-
-    // OLD AUTO MODE DRIVE BELOW
-    // if (distanceFront <= 220) {
-    //     ledcWrite(PWM_CHANNEL, 500);
-    //     motors.forwardSaveRight();
-    //     ledcWrite(PWM_CHANNEL, 0);
-    // }
-    // else if (distanceFront <= 200 && distanceRight <= 200) {
-    //     motors.forwardSaveLeft();
-    // }
-    // else if (distanceFront <= 200 && distanceLeft <= 200) {
-    //     motors.forwardSaveRight();
-    // }
-    // else if (distanceLeft <= 200 && distanceRight <= 200) {
-    //     motors.forwardSaveRight();
-    //     delay(100);
-    // }
-    // else if (distanceLeft <= 200) {
-    //     motors.turnRight();
-    //     delay(100);
-    // } 
-    // else if (distanceRight <= 200) {
-    //     motors.turnLeft();
-    //     delay(100);
-    // } 
-    // else {
-    //     motors.forward();
-    // }
 
   // Timeout handling for both sensors
   if (sensorLeft.timeoutOccurred()) { 
@@ -268,7 +240,7 @@ void driveToggle(void* pvParameters) {
             automaticDriveMode();
             Serial.println("GOING AUTOMATIC");            
         }
-        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to debounce
+        vTaskDelay(pdMS_TO_TICKS(199)); // Add a delay to debounce
     }
 }
 

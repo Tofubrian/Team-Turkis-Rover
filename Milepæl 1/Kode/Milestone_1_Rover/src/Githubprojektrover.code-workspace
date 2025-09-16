@@ -6,6 +6,10 @@
 		{
 			"name": "Milestone_1_Rover",
 			"path": ".."
+		},
+		{
+			"name": "include",
+			"path": "../include"
 		}
 	],
 	"settings": {}
